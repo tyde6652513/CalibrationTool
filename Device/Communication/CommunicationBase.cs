@@ -220,7 +220,7 @@ namespace Device.Communication
             byte[] receiveBytes = new byte[this._client.ReceiveBufferSize];
             int numberOfBytesRead = 0;
             NetworkStream ns = this._client.GetStream();
-            while (this._sw.ElapsedMilliseconds < _waitResponseTime)
+            while (this._sw.ElapsedMilliseconds < 50)
             {
                 this._sw.Start();
                 if (ns.CanRead && ns.DataAvailable)

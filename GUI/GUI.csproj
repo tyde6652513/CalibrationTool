@@ -60,6 +60,12 @@
     <Compile Include="frmMPDAConnect.Designer.cs">
       <DependentUpon>frmMPDAConnect.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSMUConnect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSMUConnect.Designer.cs">
+      <DependentUpon>frmSMUConnect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -77,6 +83,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmMPDAConnect.resx">
       <DependentUpon>frmMPDAConnect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSMUConnect.resx">
+      <DependentUpon>frmSMUConnect.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

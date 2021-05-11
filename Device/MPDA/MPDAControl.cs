@@ -367,7 +367,7 @@ namespace Device.MPDA
             this._communication.SendCmd(this._byteCmd.ToArray());
             if (this._communication.ReturnBytes[1] != (byte)0x01)
             {
-                throw new Exception("Delay times set is failed");
+                throw new Exception("Set to ram is failed");
             }
         }
 

@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Communication\CommunicationBase.cs" />
     <Compile Include="Communication\TcpSetting.cs" />
-    <None Include="K2601\K2601Control.cs" />
+    <Compile Include="K2601\K2601Control.cs" />
     <Compile Include="MPDA\IOSetting.cs" />
     <Compile Include="MPDA\MPDAControl.cs" />
     <Compile Include="MPDA\MPDAMeasureParameter.cs" />

@@ -18,8 +18,15 @@ namespace GUI
         public TcpSetting MPDAConnect() 
         {
             frmMPDAConnect frmMPDA = new frmMPDAConnect();
-            frmMPDA.ShowDialog();
+            frmMPDA.ShowDialog();           
             return frmMPDA.TcpSet;
+        }
+
+        public TcpSetting SMUConnect()
+        {
+            frmSMUConnect frmSMU = new frmSMUConnect();
+            frmSMU.ShowDialog();
+            return frmSMU.TcpSet;
         }
 
     }
