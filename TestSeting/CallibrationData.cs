@@ -43,7 +43,7 @@ namespace TestSeting
     [Serializable]
     public class BiasCalibrate 
     {
-        public Item2[] TestItem = new Item2[11];
+        public Item2[] TestItem = new Item2[21];
     }
 
     [Serializable]

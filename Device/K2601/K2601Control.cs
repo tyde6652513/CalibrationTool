@@ -119,9 +119,9 @@ namespace Device.K2601
         public string TrigMsrtV()
         {
             string script = string.Empty;
-            script += "smua.source.output = 1" + "\n";
+            //script += "smua.source.output = 1" + "\n";
             script += "print(smua.measure.v())" + "\n";
-            script += "smua.source.output = 0" + "\n";
+            //script += "smua.source.output = 0" + "\n";
             //script += "print(smua.measure.v())" + "\n";
             this._communicationBase.SendCmd(script);
             Thread.Sleep(50);

@@ -646,6 +646,8 @@ namespace GUI
             {
                 MessageBox.Show(ex.Message);
             }
+
+            this._subFormAgent.MessageBox("零點校正完成");
         }
 
         private void BiasCalibration() 
@@ -653,7 +655,7 @@ namespace GUI
             // progress bar
             this.pgb.Visible = true;
             this.pgb.Minimum = 0;
-            this.pgb.Maximum = 20;
+            this.pgb.Maximum = 44;
             this.pgb.Value = 1;
             this.pgb.Step = 1;
             txtStatus.Text = string.Empty;
@@ -674,7 +676,7 @@ namespace GUI
                 this._mpdaControl.SetMsrRange(3, 1, 1, false, true);
                 this.updataStatus();
                 //
-                for (int j = -5; j <= 5; j++)
+                for (int j = -10; j <= 10; j++)
                 {
                     SmuMsrtValue.Clear();
                     this.nextStatus("輸出Bias" + j + "V, SMU傳輸資料");
@@ -687,9 +689,9 @@ namespace GUI
                     }
                     this.updataStatus();
                     this.nextStatus("暫存資料");
-                    this._callibrationData.BiasCalibrate.TestItem[j+5] = new Item2();
-                    this._callibrationData.BiasCalibrate.TestItem[j + 5].Address = 0x00; ///暫時填值 日後修改
-                    this._callibrationData.BiasCalibrate.TestItem[j + 5].Value = this.Similar(SmuMsrtValue.ToArray(), j);
+                    this._callibrationData.BiasCalibrate.TestItem[j+10] = new Item2();
+                    this._callibrationData.BiasCalibrate.TestItem[j + 10].Address = 0x00; ///暫時填值 日後修改
+                    this._callibrationData.BiasCalibrate.TestItem[j + 10].Value = this.Similar(SmuMsrtValue.ToArray(), j);
                     this.updataStatus();
                 }
 
@@ -699,7 +701,9 @@ namespace GUI
 
                 MessageBox.Show(ex.Message);
             }
-            
+
+            this._subFormAgent.MessageBox("零點校正完成");
+
         }
 
         private double Similar(double[] data, double target) 
@@ -724,48 +728,66 @@ namespace GUI
 
         #region >>>Event<<<
 
-        private void btnZero_Click(object sender, EventArgs e)
+        private void tsmZero_Click(object sender, EventArgs e)
         {
+            if (this._mpdaControl == null)
+            {
+                MessageBox.Show("MPDA未連線");
+                return;
+            }
             this._callibrationData = this.DeSerializeXML();
-            this.ZeroCalibration();           
+            this.ZeroCalibration();
             this.SerializeXML();
         }
 
-        private void btnOffset_Click(object sender, EventArgs e)
+        private void tsmOffset_Click(object sender, EventArgs e)
         {
+            if (this._mpdaControl == null)
+            {
+                MessageBox.Show("MPDA未連線");
+                return;
+            }
             this._callibrationData = this.DeSerializeXML();
             this.OffsetCalibration();
             this.SerializeXML();
         }
 
-        private void btnCurrent_Click(object sender, EventArgs e)
+        private void tsmCurrent_Click(object sender, EventArgs e)
         {
+            if ( (this._mpdaControl == null) || (this._k2601Control == null) )
+            {
+                MessageBox.Show("MPDA或SMU未連線");
+                return;
+            }
             this._callibrationData = this.DeSerializeXML();
             this.CurrentCalibration();
             this.SerializeXML();
-
         }
 
-        private void btnMPDAConnect_Click(object sender, EventArgs e)
+        private void tsmBias_Click(object sender, EventArgs e)
+        {
+            if ((this._mpdaControl == null) || (this._k2601Control == null))
+            {
+                MessageBox.Show("MPDA或SMU未連線");
+                return;
+            }
+            this._callibrationData = this.DeSerializeXML();
+            this.BiasCalibration();
+            this.SerializeXML();
+        }
+
+        private void tsmSMUConnect_Click(object sender, EventArgs e)
+        {
+            this.SMUconnect();
+        }
+
+        private void tsmMPDAConnect_Click(object sender, EventArgs e)
         {
             this.MPDAconnect();
         }
 
-        private void btnSMUConnect_Click(object sender, EventArgs e)
-        {
-
-            this.SMUconnect();
-        }
-
-
-
 
         #endregion
 
-        private void btnBias_Click(object sender, EventArgs e)
-        {
-            this.Similar(new double[3] { 1.2, 1.5, 2.8 }, 2);
-            this.BiasCalibration();
-        }
     }
 }

@@ -82,8 +82,8 @@ namespace Device.MPDA
             {
                 this._communication.SendCmd(0x34);
                 Int16 biasVoltageDAC = (Int16) ((this._communication.ReturnBytes[1] << 8) | this._communication.ReturnBytes[2]);
-                Int16 signedMask = 0x7ff; // 07ff -> Mask the signed bit
-                decimal biasVoltage = (biasVoltageDAC & signedMask) * 0.005m;
+                //Int16 signedMask = 0x7ff; // 07ff -> Mask the signed bit
+                decimal biasVoltage = Math.Abs(0x800 - biasVoltageDAC) * 0.005m;
                 if ((biasVoltageDAC & 0x0800) == 0)
                 {
                     biasVoltage = -biasVoltage;
@@ -285,16 +285,18 @@ namespace Device.MPDA
         {
             Int16 positiveMask = 2048; // 0X0800
             decimal resolution = 0.005m;
-            Int16 biasVoltageDAC = Convert.ToInt16(biasVoltage / resolution);
+            Int16 biasVoltageDAC = Convert.ToInt16(Math.Abs(biasVoltage) / resolution);
             if (biasVoltage > 0)
             {
-                biasVoltageDAC = (Int16)(biasVoltageDAC | positiveMask); //最左位元補1
+                //biasVoltageDAC = (Int16)(biasVoltageDAC | positiveMask); //最左位元補1
+                biasVoltageDAC = (Int16) (biasVoltageDAC + positiveMask);
             }
             else
             {
-                biasVoltageDAC = Math.Abs(biasVoltageDAC);
+                //biasVoltageDAC = Math.Abs(biasVoltageDAC);
+                biasVoltageDAC = (Int16)(positiveMask - biasVoltageDAC);
             }            
-            byte[] temp = BitConverter.GetBytes((ushort)biasVoltageDAC);
+            byte[] temp = BitConverter.GetBytes(biasVoltageDAC);
             this._byteCmd.Clear();
             this._byteCmd.Add(0x33);
             this._byteCmd.Add(temp[1]);
