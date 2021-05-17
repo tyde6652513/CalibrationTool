@@ -8,11 +8,28 @@ namespace TestSeting
     [Serializable]
     public class CallibrationData
     {
+        
         public ZeroCalibrate ZeroCalibrate = new ZeroCalibrate();
         public OffsetCalibrate OffsetCalibrate = new OffsetCalibrate();
         public CurrentCalibrate CurrentCalibrate = new CurrentCalibrate();
         public BiasCalibrate BiasCalibrate = new BiasCalibrate();
     }
+
+    [Serializable]
+    public static class CalInf
+    {
+        public static Dictionary<string, string> data = new Dictionary<string, string>
+        {
+            {"Time",""},
+            {"CalNum",""},
+            {"IP","" },
+            {"SubMask","" },
+            {"DefaultGateWay","" },
+            {"Port","" }
+        };
+        
+    }
+
 
     [Serializable]
     public class ZeroCalibrate
@@ -43,7 +60,7 @@ namespace TestSeting
     [Serializable]
     public class BiasCalibrate 
     {
-        public Item2[] TestItem = new Item2[21];
+        public Item1[] TestItem = new Item1[21];
     }
 
     [Serializable]
@@ -54,9 +71,20 @@ namespace TestSeting
     }
 
     [Serializable]
+    public class Item1
+    {
+        public byte Address;
+        public double SMUMsrtValue;
+        public byte[] ByteCommand;
+        
+    }
+
+    [Serializable]
     public class Item2
     {
         public byte Address;
-        public double Value;
+        public double SMUMsrtValue;
+        public double MPDAMsrtValue;
+        public double DiffValue;
     }
 }

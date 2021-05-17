@@ -89,7 +89,7 @@ namespace Device.Communication
         /// Send Message.
         /// </summary>
         /// <param name="msg">The command want to send</param>
-        public void SendCmd(string cmd)
+        public void SendCommand(string cmd)
         {
             //NetworkStream ns = this._client.GetStream();
             //if (ns.CanWrite)
@@ -133,7 +133,7 @@ namespace Device.Communication
             }              
         }
         
-        public void SendCmd(byte[] byteCmd) 
+        public void SendCommand(byte[] byteCmd) 
         {
             NetworkStream ns = this._client.GetStream();
             if (ns.CanWrite)
@@ -170,7 +170,7 @@ namespace Device.Communication
             //DUpdateStatus.Invoke("No Response");  //UI介面觀察狀態
         }
         
-        public void SendCmd(byte byteSend) 
+        public void SendCommand(byte byteSend) 
         {
             byte[] byteCmd = new byte[1] { byteSend };
             NetworkStream ns = this._client.GetStream();

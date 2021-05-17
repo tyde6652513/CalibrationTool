@@ -11,7 +11,7 @@ using Device.Communication;
 
 namespace GUI
 {
-    public partial class frmMPDAConnect : Form
+    public partial class frmSMUConnect : Form
     {
         //委派給主視窗
         //public delegate void DSetTcp(TcpSetting tcpSet);
@@ -20,10 +20,9 @@ namespace GUI
 
         //
 
-        public frmMPDAConnect()
+        public frmSMUConnect()
         {
             InitializeComponent();
-            this.DialogResult = DialogResult.None;
         }
 
         private void btnNext_Click(object sender, EventArgs e)
@@ -36,14 +35,14 @@ namespace GUI
 
         private void frmMPDAConnect_Load(object sender, EventArgs e)
         {
-            txtIP.Text = GUI.Properties.Settings.Default.MPDAIP;
-            txtPort.Text = GUI.Properties.Settings.Default.MPDAPort;
+            txtIP.Text = GUI.Properties.Settings.Default.SMUIP;
+            txtPort.Text = GUI.Properties.Settings.Default.SMUPort;
         }
 
         private void frmMPDAConnect_FormClosed(object sender, FormClosedEventArgs e)
         {
-            GUI.Properties.Settings.Default.MPDAIP = txtIP.Text;
-            GUI.Properties.Settings.Default.MPDAPort = txtPort.Text;
+            GUI.Properties.Settings.Default.SMUIP = txtIP.Text;
+            GUI.Properties.Settings.Default.SMUPort = txtPort.Text;
             GUI.Properties.Settings.Default.Save();
         }
 

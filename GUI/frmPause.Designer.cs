@@ -1,6 +1,6 @@
 ﻿namespace GUI
 {
-    partial class frmMessegeBox
+    partial class frmPause
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,8 @@
         {
             this.lblMessage = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnNext = new System.Windows.Forms.Button();
+            this.btnContinue = new System.Windows.Forms.Button();
+            this.btnEnd = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,28 +51,39 @@
             this.panel1.Size = new System.Drawing.Size(355, 137);
             this.panel1.TabIndex = 1;
             // 
-            // btnNext
+            // btnContinue
             // 
-            this.btnNext.Font = new System.Drawing.Font("新細明體", 12F);
-            this.btnNext.Location = new System.Drawing.Point(260, 157);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(89, 36);
-            this.btnNext.TabIndex = 3;
-            this.btnNext.Text = "下一步";
-            this.btnNext.UseVisualStyleBackColor = true;
-            this.btnNext.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnContinue.Font = new System.Drawing.Font("新細明體", 12F);
+            this.btnContinue.Location = new System.Drawing.Point(260, 157);
+            this.btnContinue.Name = "btnContinue";
+            this.btnContinue.Size = new System.Drawing.Size(89, 36);
+            this.btnContinue.TabIndex = 3;
+            this.btnContinue.Text = "繼續";
+            this.btnContinue.UseVisualStyleBackColor = true;
+            this.btnContinue.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // frmMessegeBox
+            // btnEnd
+            // 
+            this.btnEnd.Font = new System.Drawing.Font("新細明體", 12F);
+            this.btnEnd.Location = new System.Drawing.Point(12, 157);
+            this.btnEnd.Name = "btnEnd";
+            this.btnEnd.Size = new System.Drawing.Size(89, 36);
+            this.btnEnd.TabIndex = 4;
+            this.btnEnd.Text = "終止";
+            this.btnEnd.UseVisualStyleBackColor = true;
+            this.btnEnd.Click += new System.EventHandler(this.btnEnd_Click);
+            // 
+            // frmPause
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(379, 205);
             this.ControlBox = false;
-            this.Controls.Add(this.btnNext);
+            this.Controls.Add(this.btnEnd);
+            this.Controls.Add(this.btnContinue);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "frmMessegeBox";
-            this.Text = "frmMessegeBox";
+            this.Name = "frmPause";
+            this.Text = "frmPause";
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -81,6 +93,7 @@
 
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button btnContinue;
+        private System.Windows.Forms.Button btnEnd;
     }
 }

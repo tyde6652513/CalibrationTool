@@ -1,6 +1,6 @@
 ﻿namespace GUI
 {
-    partial class frmMPDAConnect
+    partial class frmSMUConnect
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,7 @@
             this.txtIP = new System.Windows.Forms.TextBox();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.lblMessage = new System.Windows.Forms.Label();
-            this.btnConfirm = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -77,32 +77,33 @@
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(296, 75);
             this.lblMessage.TabIndex = 4;
-            this.lblMessage.Text = "輸入MPDA IP 位址並確認接上網路線且網域正確，完成後按確認";
+            this.lblMessage.Text = "輸入SMU IP 位址並確認接上網路線且網域正確，完成後按下一步";
             // 
-            // btnConfirm
+            // btnNext
             // 
-            this.btnConfirm.Font = new System.Drawing.Font("新細明體", 12F);
-            this.btnConfirm.Location = new System.Drawing.Point(285, 159);
-            this.btnConfirm.Name = "btnConfirm";
-            this.btnConfirm.Size = new System.Drawing.Size(89, 36);
-            this.btnConfirm.TabIndex = 5;
-            this.btnConfirm.Text = "確認";
-            this.btnConfirm.UseVisualStyleBackColor = true;
-            this.btnConfirm.Click += new System.EventHandler(this.btnNext_Click);
+            this.btnNext.Font = new System.Drawing.Font("新細明體", 12F);
+            this.btnNext.Location = new System.Drawing.Point(285, 159);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(89, 36);
+            this.btnNext.TabIndex = 5;
+            this.btnNext.Text = "下一步";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
-            // frmMPDAConnect
+            // frmSMUConnect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(395, 207);
-            this.Controls.Add(this.btnConfirm);
+            this.Controls.Add(this.btnNext);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.txtPort);
             this.Controls.Add(this.txtIP);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "frmMPDAConnect";
-            this.Text = "frmMPDAConnect";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Name = "frmSMUConnect";
+            this.Text = "SMUConnect";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMPDAConnect_FormClosed);
             this.Load += new System.EventHandler(this.frmMPDAConnect_Load);
             this.ResumeLayout(false);
@@ -117,6 +118,6 @@
         private System.Windows.Forms.TextBox txtIP;
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label lblMessage;
-        private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.Button btnNext;
     }
 }

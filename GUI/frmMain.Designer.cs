@@ -39,12 +39,18 @@
             this.連線ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmMPDAConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmSMUConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.校正ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmZero = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmOffset = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmCurrent = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmBias = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmWriteData = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmPause = new System.Windows.Forms.ToolStripMenuItem();
+            this.資料存取ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmWrite = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmOutputExcel = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.tsmiPIV = new System.Windows.Forms.ToolStripMenuItem();
             this.mspTool.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,6 +60,7 @@
             this.txtStatus.Location = new System.Drawing.Point(12, 135);
             this.txtStatus.Multiline = true;
             this.txtStatus.Name = "txtStatus";
+            this.txtStatus.ReadOnly = true;
             this.txtStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtStatus.Size = new System.Drawing.Size(362, 305);
             this.txtStatus.TabIndex = 0;
@@ -122,7 +129,9 @@
             this.mspTool.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.mspTool.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.連線ToolStripMenuItem,
-            this.校正ToolStripMenuItem});
+            this.校正ToolStripMenuItem,
+            this.tsmiPIV,
+            this.資料存取ToolStripMenuItem});
             this.mspTool.Location = new System.Drawing.Point(0, 0);
             this.mspTool.Name = "mspTool";
             this.mspTool.Size = new System.Drawing.Size(380, 32);
@@ -133,7 +142,8 @@
             // 
             this.連線ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmMPDAConnect,
-            this.tsmSMUConnect});
+            this.tsmSMUConnect,
+            this.tsmDisconnect});
             this.連線ToolStripMenuItem.Name = "連線ToolStripMenuItem";
             this.連線ToolStripMenuItem.Size = new System.Drawing.Size(60, 28);
             this.連線ToolStripMenuItem.Text = "連線";
@@ -141,16 +151,23 @@
             // tsmMPDAConnect
             // 
             this.tsmMPDAConnect.Name = "tsmMPDAConnect";
-            this.tsmMPDAConnect.Size = new System.Drawing.Size(136, 28);
+            this.tsmMPDAConnect.Size = new System.Drawing.Size(156, 28);
             this.tsmMPDAConnect.Text = "MPDA";
             this.tsmMPDAConnect.Click += new System.EventHandler(this.tsmMPDAConnect_Click);
             // 
             // tsmSMUConnect
             // 
             this.tsmSMUConnect.Name = "tsmSMUConnect";
-            this.tsmSMUConnect.Size = new System.Drawing.Size(136, 28);
+            this.tsmSMUConnect.Size = new System.Drawing.Size(156, 28);
             this.tsmSMUConnect.Text = "SMU";
             this.tsmSMUConnect.Click += new System.EventHandler(this.tsmSMUConnect_Click);
+            // 
+            // tsmDisconnect
+            // 
+            this.tsmDisconnect.Name = "tsmDisconnect";
+            this.tsmDisconnect.Size = new System.Drawing.Size(156, 28);
+            this.tsmDisconnect.Text = "中斷連線";
+            this.tsmDisconnect.Click += new System.EventHandler(this.tsmDisconnect_Click);
             // 
             // 校正ToolStripMenuItem
             // 
@@ -160,7 +177,7 @@
             this.tsmOffset,
             this.tsmCurrent,
             this.tsmBias,
-            this.tsmWriteData});
+            this.tsmPause});
             this.校正ToolStripMenuItem.Name = "校正ToolStripMenuItem";
             this.校正ToolStripMenuItem.Size = new System.Drawing.Size(60, 28);
             this.校正ToolStripMenuItem.Text = "校正";
@@ -168,36 +185,67 @@
             // tsmZero
             // 
             this.tsmZero.Name = "tsmZero";
-            this.tsmZero.Size = new System.Drawing.Size(180, 28);
+            this.tsmZero.Size = new System.Drawing.Size(172, 28);
             this.tsmZero.Text = "零點校正";
             this.tsmZero.Click += new System.EventHandler(this.tsmZero_Click);
             // 
             // tsmOffset
             // 
             this.tsmOffset.Name = "tsmOffset";
-            this.tsmOffset.Size = new System.Drawing.Size(180, 28);
+            this.tsmOffset.Size = new System.Drawing.Size(172, 28);
             this.tsmOffset.Text = "Offset校正";
             this.tsmOffset.Click += new System.EventHandler(this.tsmOffset_Click);
             // 
             // tsmCurrent
             // 
             this.tsmCurrent.Name = "tsmCurrent";
-            this.tsmCurrent.Size = new System.Drawing.Size(180, 28);
+            this.tsmCurrent.Size = new System.Drawing.Size(172, 28);
             this.tsmCurrent.Text = "電流校正";
             this.tsmCurrent.Click += new System.EventHandler(this.tsmCurrent_Click);
             // 
             // tsmBias
             // 
             this.tsmBias.Name = "tsmBias";
-            this.tsmBias.Size = new System.Drawing.Size(180, 28);
+            this.tsmBias.Size = new System.Drawing.Size(172, 28);
             this.tsmBias.Text = "Bias校正";
             this.tsmBias.Click += new System.EventHandler(this.tsmBias_Click);
             // 
-            // tsmWriteData
+            // tsmPause
             // 
-            this.tsmWriteData.Name = "tsmWriteData";
-            this.tsmWriteData.Size = new System.Drawing.Size(180, 28);
-            this.tsmWriteData.Text = "寫入校正檔";
+            this.tsmPause.Name = "tsmPause";
+            this.tsmPause.Size = new System.Drawing.Size(172, 28);
+            this.tsmPause.Text = "校正暫停";
+            this.tsmPause.Click += new System.EventHandler(this.tsmPause_Click);
+            // 
+            // 資料存取ToolStripMenuItem
+            // 
+            this.資料存取ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmWrite,
+            this.tsmOutputExcel});
+            this.資料存取ToolStripMenuItem.Name = "資料存取ToolStripMenuItem";
+            this.資料存取ToolStripMenuItem.Size = new System.Drawing.Size(98, 28);
+            this.資料存取ToolStripMenuItem.Text = "資料存取";
+            // 
+            // tsmWrite
+            // 
+            this.tsmWrite.Name = "tsmWrite";
+            this.tsmWrite.Size = new System.Drawing.Size(200, 28);
+            this.tsmWrite.Text = "寫入校正資料";
+            this.tsmWrite.Click += new System.EventHandler(this.tsmWrite_Click);
+            // 
+            // tsmOutputExcel
+            // 
+            this.tsmOutputExcel.Name = "tsmOutputExcel";
+            this.tsmOutputExcel.Size = new System.Drawing.Size(200, 28);
+            this.tsmOutputExcel.Text = "輸出Excel檔案";
+            this.tsmOutputExcel.Click += new System.EventHandler(this.tsmOutputExcel_Click);
+            // 
+            // tsmiPIV
+            // 
+            this.tsmiPIV.Name = "tsmiPIV";
+            this.tsmiPIV.Size = new System.Drawing.Size(89, 28);
+            this.tsmiPIV.Text = "PIV測試";
+            this.tsmiPIV.Click += new System.EventHandler(this.tsmiPIV_Click);
             // 
             // frmMain
             // 
@@ -213,6 +261,7 @@
             this.Controls.Add(this.pgb);
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.mspTool);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.mspTool;
             this.Name = "frmMain";
             this.Text = "Calibration";
@@ -241,6 +290,12 @@
         private System.Windows.Forms.ToolStripMenuItem tsmOffset;
         private System.Windows.Forms.ToolStripMenuItem tsmCurrent;
         private System.Windows.Forms.ToolStripMenuItem tsmBias;
-        private System.Windows.Forms.ToolStripMenuItem tsmWriteData;
+        private System.Windows.Forms.ToolStripMenuItem 資料存取ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmWrite;
+        private System.Windows.Forms.ToolStripMenuItem tsmOutputExcel;
+        private System.Windows.Forms.ToolStripMenuItem tsmPause;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem tsmDisconnect;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPIV;
     }
 }

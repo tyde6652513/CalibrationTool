@@ -11,13 +11,14 @@ namespace Device.MPDA
 {   
     /// <summary>
     /// Base class for MPDA.Provide methods/parameter for setting/getting MPDA set value
+    /// Ver 2.0;
     /// </summary>
     public class MPDAControl
     {
 
         #region >>>private field<<<
 
-        private CommunicationBase _communication;
+        private CommunicationBase _con;
         private IOSetting _iOSet;
         private List<byte> _byteCmd = new List<byte>();
 
@@ -33,12 +34,12 @@ namespace Device.MPDA
         #region >>>Constructor<<<
         public MPDAControl(TcpSetting tcpSet) 
         {
-            this._communication = new CommunicationBase(tcpSet);
-            if (!this._communication.Connect())
+            this._con = new CommunicationBase(tcpSet);
+            if (!this._con.Connect())
             {
-                throw this._communication.Exception;
+                throw this._con.Exception;
             }
-            this._iOSet = new IOSetting(this._communication);
+            this._iOSet = new IOSetting(this._con);
         }
         #endregion
 
@@ -46,7 +47,7 @@ namespace Device.MPDA
 
         public CommunicationBase Communication
         {
-            get { return _communication; }
+            get { return _con; }
         }
 
         public IOSetting IOSet
@@ -58,9 +59,9 @@ namespace Device.MPDA
         {
             get 
             {
-                this._communication.SendCmd(0x38);
-                int integrationTimes = ( (this._communication.ReturnBytes[1] << 8) | this._communication.ReturnBytes[2]);
-                int intervalTime = this._communication.ReturnBytes[3];
+                this._con.SendCommand(0x38);
+                int integrationTimes = ( (this._con.ReturnBytes[1] << 8) | this._con.ReturnBytes[2]);
+                int intervalTime = this._con.ReturnBytes[3];
                 return integrationTimes * intervalTime;
             }
         }
@@ -69,9 +70,9 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd(0x40);
-                int delayTime = ( (this._communication.ReturnBytes[1] << 8) | this._communication.ReturnBytes[2]);
-                int timeBase = ((this._communication.ReturnBytes[3] << 8) | this._communication.ReturnBytes[4]);
+                this._con.SendCommand(0x40);
+                int delayTime = ( (this._con.ReturnBytes[1] << 8) | this._con.ReturnBytes[2]);
+                int timeBase = ((this._con.ReturnBytes[3] << 8) | this._con.ReturnBytes[4]);
                 return delayTime * timeBase;
             }
         }
@@ -80,8 +81,8 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd(0x34);
-                Int16 biasVoltageDAC = (Int16) ((this._communication.ReturnBytes[1] << 8) | this._communication.ReturnBytes[2]);
+                this._con.SendCommand(0x34);
+                Int16 biasVoltageDAC = (Int16) ((this._con.ReturnBytes[1] << 8) | this._con.ReturnBytes[2]);
                 //Int16 signedMask = 0x7ff; // 07ff -> Mask the signed bit
                 decimal biasVoltage = Math.Abs(0x800 - biasVoltageDAC) * 0.005m;
                 if ((biasVoltageDAC & 0x0800) == 0)
@@ -96,8 +97,8 @@ namespace Device.MPDA
         {
             get 
             {
-                this._communication.SendCmd(0x32);
-                switch (this._communication.ReturnBytes[1])
+                this._con.SendCommand(0x32);
+                switch (this._con.ReturnBytes[1])
                 {
                     case 9:
                         return "1nA";
@@ -127,8 +128,8 @@ namespace Device.MPDA
         {
             get 
             {
-                this._communication.SendCmd(0x32);
-                return this._communication.ReturnBytes[2] >> 4;
+                this._con.SendCommand(0x32);
+                return this._con.ReturnBytes[2] >> 4;
             }
         }
 
@@ -136,8 +137,8 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd(0x32);
-                return (this._communication.ReturnBytes[2] & 0x0c) >> 2;
+                this._con.SendCommand(0x32);
+                return (this._con.ReturnBytes[2] & 0x0c) >> 2;
             }
         }
 
@@ -145,8 +146,8 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd(0x32);
-                return (this._communication.ReturnBytes[2] & 0x02) != 0;
+                this._con.SendCommand(0x32);
+                return (this._con.ReturnBytes[2] & 0x02) != 0;
             }
         }
 
@@ -154,8 +155,8 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd(0x32);
-                return (this._communication.ReturnBytes[2] & 0x01) != 0;
+                this._con.SendCommand(0x32);
+                return (this._con.ReturnBytes[2] & 0x01) != 0;
             }
         }
 
@@ -163,8 +164,8 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd(0x36);
-                switch (this._communication.ReturnBytes[1])
+                this._con.SendCommand(0x36);
+                switch (this._con.ReturnBytes[1])
 	            {
                     case (byte) 0x01:
                         return "HD Trigger";                     
@@ -182,6 +183,8 @@ namespace Device.MPDA
             }
         }
 
+        public byte[] ByteCmd { get => _byteCmd.ToArray(); }
+
         #endregion
 
         #region >>>private method<<<
@@ -194,8 +197,8 @@ namespace Device.MPDA
         /// </summary>
         public void ClearBuffer() 
         {
-            this._communication.SendCmd(0x45);
-            if (this._communication.ReturnBytes[1] != (byte)0x01)
+            this._con.SendCommand(0x45);
+            if (this._con.ReturnBytes[1] != (byte)0x01)
             {
                 throw new Exception("ClearBuffer is failed");
             }
@@ -206,8 +209,8 @@ namespace Device.MPDA
         /// </summary>
         public void InternalTrigger() 
         {
-            this._communication.SendCmd(0x98);
-            if (this._communication.ReturnBytes[1] != (byte)0x01)
+            this._con.SendCommand(0x98);
+            if (this._con.ReturnBytes[1] != (byte)0x01)
             {
                 throw new Exception("Internal Trigger is failed");
             }
@@ -215,8 +218,8 @@ namespace Device.MPDA
 
         public void OffsetAdjust() 
         {
-            this._communication.SendCmd(0x56);
-            if (this._communication.ReturnBytes[1] != (byte)0x01)
+            this._con.SendCommand(0x56);
+            if (this._con.ReturnBytes[1] != (byte)0x01)
             {
                 throw new Exception("OffsetAdjust is failed");
             }
@@ -225,13 +228,14 @@ namespace Device.MPDA
         public byte[] ReadOffset() 
         {
             List<byte> temp = new List<byte>();
-            this._communication.SendCmd(0x58);
+            this._con.SendCommand(0x58);
+            temp.Add(0);
+            temp.Add(0);
             for (int i = 1; i < 3; i++)
             {
-                temp.Add(this._communication.ReturnBytes[i]);
+                temp.Add(this._con.ReturnBytes[i]);
             }
-            temp.Add(0);
-            temp.Add(0);
+            
             return temp.ToArray();
         }
 
@@ -248,8 +252,8 @@ namespace Device.MPDA
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
             this._byteCmd.Add((byte) intervalTime);
-            this._communication.SendCmd(this._byteCmd.ToArray());
-            if (this._communication.ReturnBytes[1] != (byte) 0x01)
+            this._con.SendCommand(this._byteCmd.ToArray());
+            if (this._con.ReturnBytes[1] != (byte) 0x01)
             {
                 throw new Exception("Measure times set is failed");
             }
@@ -270,8 +274,8 @@ namespace Device.MPDA
             temp = BitConverter.GetBytes((ushort)timeBase);
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
-            this._communication.SendCmd(this._byteCmd.ToArray());
-            if (this._communication.ReturnBytes[1] != (byte)0x01)
+            this._con.SendCommand(this._byteCmd.ToArray());
+            if (this._con.ReturnBytes[1] != (byte)0x01)
             {
                 throw new Exception("Delay times set is failed");
             }           
@@ -301,8 +305,8 @@ namespace Device.MPDA
             this._byteCmd.Add(0x33);
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
-            this._communication.SendCmd(this._byteCmd.ToArray());
-            if ((this._communication.ReturnBytes[1] != 0x01) || (Math.Abs(biasVoltage) > 10))
+            this._con.SendCommand(this._byteCmd.ToArray());
+            if ((this._con.ReturnBytes[1] != 0x01) || (Math.Abs(biasVoltage) > 10.235M))
             {
                 throw new Exception("Delay times set is failed");
             }
@@ -322,8 +326,8 @@ namespace Device.MPDA
             this._byteCmd.Add(firstRange);
             int temp = (this._filterRange << 4) | (this._secondRange << 2) | (Convert.ToByte(this._offset) << 1) | (Convert.ToByte(this._bias));
             this._byteCmd.Add(BitConverter.GetBytes(temp)[0]);
-            this._communication.SendCmd(this._byteCmd.ToArray());
-            if (this._communication.ReturnBytes[1] != (byte) 0x01)
+            this._con.SendCommand(this._byteCmd.ToArray());
+            if (this._con.ReturnBytes[1] != (byte) 0x01)
             {
                 throw new Exception("Measure times set is failed");
             } 
@@ -349,8 +353,8 @@ namespace Device.MPDA
             this._byteCmd.Clear();
             this._byteCmd.Add(0x35);
             this._byteCmd.Add( (byte) (0x01 << (modeSelect-1)) );
-            this._communication.SendCmd(this._byteCmd.ToArray());            
-            if (this._communication.ReturnBytes[1] != 0x01)
+            this._con.SendCommand(this._byteCmd.ToArray());            
+            if (this._con.ReturnBytes[1] != 0x01)
             {
                 throw new Exception("Trigger mode set is failed");
             } 
@@ -366,10 +370,27 @@ namespace Device.MPDA
             this._byteCmd.Add(setValue[1]);
             this._byteCmd.Add(setValue[2]);
             this._byteCmd.Add(setValue[3]);
-            this._communication.SendCmd(this._byteCmd.ToArray());
-            if (this._communication.ReturnBytes[1] != (byte)0x01)
+            this._con.SendCommand(this._byteCmd.ToArray());
+            if (this._con.ReturnBytes[1] != (byte)0x01)
             {
                 throw new Exception("Set to ram is failed");
+            }
+        }
+
+        public void EnableRam() 
+        {
+            this._byteCmd.Clear();
+            this._byteCmd.Add(0x49);
+            this._byteCmd.Add(0x00);
+            this._byteCmd.Add(0x00);
+            this._byteCmd.Add(0x00);
+            this._byteCmd.Add(0x00);
+            this._byteCmd.Add(0x00);
+            this._byteCmd.Add(0x01);
+            this._con.SendCommand(this._byteCmd.ToArray());
+            if (this._con.ReturnBytes[1] != (byte)0x01)
+            {
+                throw new Exception("Enable calibrate is failed");
             }
         }
 
@@ -386,15 +407,16 @@ namespace Device.MPDA
             byte[] temp = BitConverter.GetBytes((Int16)numOfRead);
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
-            this._communication.SendCmd(this._byteCmd.ToArray());
+            this._con.SendCommand(this._byteCmd.ToArray());
             double[] readData = new double[numOfRead];
             for (int i = 0; i < numOfRead; i++)
             {
                 int startIndex = i * 5;
-                int rawValue = (this.Communication.ReturnBytes[startIndex + 0] << 24) + (this.Communication.ReturnBytes[startIndex+1] << 16)
-                             + (this.Communication.ReturnBytes[startIndex + 2] << 8) + (this.Communication.ReturnBytes[startIndex+3]);
+                temp = this._con.ReturnBytes;
+                int rawValue = (temp[startIndex + 0] << 24) + (temp[startIndex + 1] << 16)
+                             + (temp[startIndex + 2] << 8) + (temp[startIndex + 3]);
                 //double scale = (10e-9) * ( Math.Pow(10, -(this.Communication.ReturnBytes[startIndex + 4])) ); //20210413 Darcy
-                double scale = Math.Pow(10, -((this.Communication.ReturnBytes[startIndex + 4]) + 9));
+                double scale = Math.Pow(10, -((this._con.ReturnBytes[startIndex + 4]) + 9));
                 readData[i] = rawValue * scale;
             }
             return readData;
@@ -408,7 +430,7 @@ namespace Device.MPDA
             byte[] temp = BitConverter.GetBytes((Int16)numOfRead);
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
-            this._communication.SendCmd(this._byteCmd.ToArray());
+            this._con.SendCommand(this._byteCmd.ToArray());
             byte[][] readData = new byte[numOfRead][];
             for (int i = 0; i < numOfRead; i++)
             {
@@ -416,7 +438,7 @@ namespace Device.MPDA
                 byte[] readTempData = new byte[5]; 
                 for (int j = 0; j < 5; j++)
                 {
-                    readTempData[j] = this.Communication.ReturnBytes[startIndex + j];
+                    readTempData[j] = this._con.ReturnBytes[startIndex + j];
                 }
                 readData[i] = readTempData;
             }

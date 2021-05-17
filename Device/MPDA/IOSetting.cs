@@ -24,7 +24,7 @@ namespace Device.MPDA
         {
             get 
             {
-                this._communication.SendCmd("52");
+                this._communication.SendCommand("52");
                 _byteReceive = this._communication.ReturnBytes[1];
                 return (_byteReceive & 0x01) != 0;
             }
@@ -33,7 +33,7 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd("52");
+                this._communication.SendCommand("52");
                 byte _byteReceive = this._communication.ReturnBytes[1];
                 return (_byteReceive & 0x02) != 0;
             }
@@ -42,7 +42,7 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd("52");
+                this._communication.SendCommand("52");
                 byte _byteReceive = this._communication.ReturnBytes[1];
                 return (_byteReceive & 0x04) != 0;
             }
@@ -51,7 +51,7 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd("52");
+                this._communication.SendCommand("52");
                 byte _byteReceive = this._communication.ReturnBytes[1];
                 return (_byteReceive & 0x08) != 0;
             }
@@ -60,7 +60,7 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd("52");
+                this._communication.SendCommand("52");
                 byte _byteReceive = this._communication.ReturnBytes[1];
                 return (_byteReceive & 0x10) != 0;
             }
@@ -69,7 +69,7 @@ namespace Device.MPDA
         {
             get
             {
-                this._communication.SendCmd("52");
+                this._communication.SendCommand("52");
                 byte _byteReceive = this._communication.ReturnBytes[1];
                 return (_byteReceive & 0x20) != 0;
             }
@@ -87,7 +87,7 @@ namespace Device.MPDA
         {
             int temp = 0x01 << IOnumber - 1;            
             this._byteCmd[1] = (byte)(this._byteCmd[1] | temp);
-            this._communication.SendCmd(this._byteCmd);
+            this._communication.SendCommand(this._byteCmd);
         }
         /// <summary>
         /// Disable IO (1 ~ 6)
@@ -99,7 +99,7 @@ namespace Device.MPDA
         {
             int temp = ~(0x01 << IOnumber - 1);
             this._byteCmd[1] = (byte)(this._byteCmd[1] & temp);
-            this._communication.SendCmd(this._byteCmd);
+            this._communication.SendCommand(this._byteCmd);
         }
         #endregion
     }
