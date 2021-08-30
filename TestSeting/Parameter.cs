@@ -105,8 +105,7 @@ namespace TestSeting
     public class MPDAParameter 
     {
         public bool BiasEnable;
-        public int IntegrationTimes;
-        public int IntervalTimes;
+        public int ApertureTimes;
         public int DelayTimeSet;
         public int TimeBase;
         public decimal BiasVoltage;
@@ -116,8 +115,7 @@ namespace TestSeting
         public MPDAParameter() 
         {
             // Default value
-            IntegrationTimes = 10;
-            IntervalTimes = 1;
+            ApertureTimes = 10;           
             DelayTimeSet = 10;
             TimeBase = 10;
             BiasVoltage = 0;

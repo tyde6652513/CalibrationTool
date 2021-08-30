@@ -64,8 +64,8 @@ namespace GUI
                 this._pulseParameter.ClampVoltage = (int)nudClampV.Value;
                 //MPDA
                 this._mpdaParameter.MeasureRange = (byte)(cboMsrtRange.SelectedIndex + 1);
-                this._mpdaParameter.IntegrationTimes = (int)(nudMsrtTime.Value);
-                this._mpdaParameter.IntervalTimes = 1;
+                this._mpdaParameter.ApertureTimes = (int)(nudMsrtTime.Value);
+               // this._mpdaParameter.IntervalTimes = 1;
                 this._mpdaParameter.DelayTimeSet = (int)(nudDelayTime.Value * 10);
                 this._mpdaParameter.TimeBase = 1;
                 this._mpdaParameter.BiasEnable = chbBiasEnabled.Checked;

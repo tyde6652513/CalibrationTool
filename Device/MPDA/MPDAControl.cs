@@ -60,9 +60,9 @@ namespace Device.MPDA
             get 
             {
                 this._con.SendCommand(0x38);
-                int integrationTimes = ( (this._con.ReturnBytes[1] << 8) | this._con.ReturnBytes[2]);
-                int intervalTime = this._con.ReturnBytes[3];
-                return integrationTimes * intervalTime;
+                int apertureTime = ( (this._con.ReturnBytes[1] << 24) | (this._con.ReturnBytes[2] << 16) | (this._con.ReturnBytes[3] << 8) | (this._con.ReturnBytes[4]) );
+                //int intervalTime = this._con.ReturnBytes[3];
+                return apertureTime;
             }
         }
 
@@ -82,7 +82,7 @@ namespace Device.MPDA
             get
             {
                 this._con.SendCommand(0x34);
-                Int16 biasVoltageDAC = (Int16) ((this._con.ReturnBytes[1] << 8) | this._con.ReturnBytes[2]);
+                Int16 biasVoltageDAC = (Int16) ((this._con.ReturnBytes[2] << 8) | this._con.ReturnBytes[3]);
                 //Int16 signedMask = 0x7ff; // 07ff -> Mask the signed bit
                 decimal biasVoltage = Math.Abs(0x800 - biasVoltageDAC) * 0.005m;
                 if ((biasVoltageDAC & 0x0800) == 0)
@@ -155,8 +155,11 @@ namespace Device.MPDA
         {
             get
             {
-                this._con.SendCommand(0x32);
-                return (this._con.ReturnBytes[2] & 0x01) != 0;
+                return this._bias;
+            }
+            set
+            {
+                this._bias = value;
             }
         }
 
@@ -240,18 +243,18 @@ namespace Device.MPDA
         }
 
         /// <summary>
-        /// Set MPDA measure times = integrationTimes * intervalTime (us)
+        /// Set MPDA measure times = apertureTime (us)
         /// </summary>
-        /// <param name="integrationTimes">Limit = 32767</param>
-        /// <param name="intervalTime">Limit = 100</param>
-        public void SetMsrTime(int integrationTimes, int intervalTime) 
+        /// <param name="apertureTime">Limit = 32767</param>
+        public void SetMsrTime(uint apertureTime) 
         {
             this._byteCmd.Clear();
-            byte[] temp = BitConverter.GetBytes((ushort) integrationTimes);
+            byte[] temp = BitConverter.GetBytes((uint)apertureTime);
             this._byteCmd.Add(0x37);
+            this._byteCmd.Add(temp[3]);
+            this._byteCmd.Add(temp[2]);
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
-            this._byteCmd.Add((byte) intervalTime);
             this._con.SendCommand(this._byteCmd.ToArray());
             if (this._con.ReturnBytes[1] != (byte) 0x01)
             {
@@ -269,6 +272,7 @@ namespace Device.MPDA
             byte[] temp = BitConverter.GetBytes((ushort)delayTimeSet);
             this._byteCmd.Clear();
             this._byteCmd.Add(0x39);
+            //this._byteCmd.Add(0x01); //預設 IO 1 
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
             temp = BitConverter.GetBytes((ushort)timeBase);
@@ -303,6 +307,7 @@ namespace Device.MPDA
             byte[] temp = BitConverter.GetBytes(biasVoltageDAC);
             this._byteCmd.Clear();
             this._byteCmd.Add(0x33);
+            this._byteCmd.Add(Convert.ToByte(this._bias));
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
             this._con.SendCommand(this._byteCmd.ToArray());
@@ -324,8 +329,8 @@ namespace Device.MPDA
             this._byteCmd.Clear();
             this._byteCmd.Add(0x31);
             this._byteCmd.Add(firstRange);
-            int temp = (this._filterRange << 4) | (this._secondRange << 2) | (Convert.ToByte(this._offset) << 1) | (Convert.ToByte(this._bias));
-            this._byteCmd.Add(BitConverter.GetBytes(temp)[0]);
+            //int temp = (this._filterRange << 4) | (this._secondRange << 2) | (Convert.ToByte(this._offset) << 1) | (Convert.ToByte(this._bias));
+            this._byteCmd.Add(0x00);
             this._con.SendCommand(this._byteCmd.ToArray());
             if (this._con.ReturnBytes[1] != (byte) 0x01)
             {
@@ -402,17 +407,23 @@ namespace Device.MPDA
         /// </param>
         public double[] ReadRawData(int numOfRead) 
         {
+            if (numOfRead > 1000)
+            {
+                numOfRead = 1000;
+            }
             this._byteCmd.Clear();
             this._byteCmd.Add(0x44);
             byte[] temp = BitConverter.GetBytes((Int16)numOfRead);
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
             this._con.SendCommand(this._byteCmd.ToArray());
+
+            temp = this._con.ReturnBytes;
             double[] readData = new double[numOfRead];
             for (int i = 0; i < numOfRead; i++)
             {
                 int startIndex = i * 5;
-                temp = this._con.ReturnBytes;
+                
                 int rawValue = (temp[startIndex + 0] << 24) + (temp[startIndex + 1] << 16)
                              + (temp[startIndex + 2] << 8) + (temp[startIndex + 3]);
                 //double scale = (10e-9) * ( Math.Pow(10, -(this.Communication.ReturnBytes[startIndex + 4])) ); //20210413 Darcy
@@ -451,7 +462,7 @@ namespace Device.MPDA
             {
                 this._bias = msrItem.BiasEnable; //enable bias
                 this.SetMsrRange(msrItem.MeasureRange);
-                this.SetMsrTime(msrItem.IntegrationTimes, msrItem.IntervalTimes);
+                this.SetMsrTime((uint)msrItem.ApertureTimes);
                 this.SetDelayTime(msrItem.DelayTimeSet, msrItem.TimeBase);
                 this.SetBiasVoltage(msrItem.BiasVoltage);
                 this.SetTriggerMode(msrItem.TriggerMode);

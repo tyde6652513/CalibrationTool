@@ -309,7 +309,8 @@ namespace GUI
                 this._subFormAgent.MessageBox("短路電路板上的Jumper，進行ADC Driver零點校正 完成後按下一步");
                 //
                 this.Invoke(dNextStatus,"設定量測時間1.6s");
-                this._mpdaControl.Communication.SendCommand(new byte[5] { 0x93, 0x00, 0x18, 0x6A, 0x00 });
+                //this._mpdaControl.Communication.SendCommand(new byte[5] { 0x93, 0x00, 0x18, 0x6A, 0x00 });
+                this._mpdaControl.SetMsrTime(1600000);
                 if (this._mpdaControl.Communication.ReturnBytes[1] != 0x01)
                 {
                     MessageBox.Show("量測設定失敗");
@@ -443,7 +444,8 @@ namespace GUI
                 this._subFormAgent.MessageBox("Keithley接線到MPDA，F+接BNC中心，F-接BNC外層");
                 //
                 this.Invoke(dNextStatus,"設定量測時間1.6s");
-                this._mpdaControl.Communication.SendCommand(new byte[5] { 0x93, 0x00, 0x18, 0x6A, 0x00 });
+                //this._mpdaControl.Communication.SendCommand(new byte[5] { 0x93, 0x00, 0x18, 0x6A, 0x00 });
+                this._mpdaControl.SetMsrTime(1600000);
                 if (this._mpdaControl.Communication.ReturnBytes[1] != 0x01)
                 {
                     MessageBox.Show("量測設定失敗");
@@ -819,7 +821,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus,"打開 MPDA Bias");
-                this._mpdaControl.SetMsrRange(3, 1, 1, false, true);
+                this._mpdaControl.Bias = true;//this._mpdaControl.SetMsrRange(3, 1, 1, false, true);
                 this.Invoke(dupdataStatus);
                 //
                 for (int j = -10; j <= 10; j++)
@@ -868,7 +870,7 @@ namespace GUI
                 //
                 //
                 this.Invoke(dNextStatus,"關閉 MPDA Bias");
-                this._mpdaControl.SetMsrRange(3, 1, 1, false, false);
+                this._mpdaControl.Bias = false;//this._mpdaControl.SetMsrRange(3, 1, 1, false, false);
                 this.Invoke(dupdataStatus);
                 //
                 this._subFormAgent.MessageBox("Bias校正完成");
@@ -899,7 +901,7 @@ namespace GUI
 
             this.Invoke(dIniPgb, new object[2] { 0, 10 });
             byte address;
-            byte[] value;
+            byte[] valueToRam;
             try
             {
                 this._mpdaControl.EnableRam();
@@ -989,9 +991,12 @@ namespace GUI
                             return;
                         }
                         address = item.Address;
-                        value = BitConverter.GetBytes(Convert.ToInt32(item.DiffValue * Math.Pow(10, j + 9)));
-                        Array.Reverse(value);
-                        this._mpdaControl.SetToRam(address, value);
+
+                        valueToRam = BitConverter.GetBytes(Convert.ToInt32(CheckINT32(item.DiffValue * Math.Pow(10, j + 9))));
+
+                        Array.Reverse(valueToRam);
+
+                        this._mpdaControl.SetToRam(address, valueToRam);
                     }
                     this.Invoke(dupdataStatus);
                 }
@@ -1135,7 +1140,7 @@ namespace GUI
                     strList.Add(item.SMUMsrtValue.ToString());
                     strList.Add(item.MPDAMsrtValue.ToString());
                     strList.Add(item.DiffValue.ToString());
-                    byte[] temp = BitConverter.GetBytes(Convert.ToInt32(item.DiffValue * Math.Pow(10, j + 9)));
+                    byte[] temp = BitConverter.GetBytes(Convert.ToInt32(CheckINT32(item.DiffValue * Math.Pow(10, j + 9))));
                     Array.Reverse(temp);
                     strList.Add(ExcTran(BitConverter.ToString(temp).Replace("-", "")));
                     newLine = string.Join(",", strList);
@@ -1186,6 +1191,18 @@ namespace GUI
             return "=" + "\"" + str + "\"";
         }
 
+        private double CheckINT32(double d) 
+        {
+            if ((d>Int32.MaxValue) || (d<Int32.MinValue))
+            {
+                return 0;
+            }
+            else
+            {
+                return d;
+            }
+        }
+
         private bool CheckDevice(bool B) 
         {
             if (B)
@@ -1206,10 +1223,6 @@ namespace GUI
             }
             return true;
         }
-
-        #endregion
-
-        #region >>>Public method<<<
 
         #endregion
 
@@ -1251,11 +1264,15 @@ namespace GUI
 
         private void tsmBias_Click(object sender, EventArgs e)
         {
+            //this._mpdaControl.ClearBuffer();
+            //this._mpdaControl.InternalTrigger();
+            //double[] a = this._mpdaControl.ReadRawData(1);
 
             if (!this.CheckDevice(true))
             {
                 return;
             }
+
             this._calState = ECalState.BiasCal;
             newThread = new Thread(this.ThreadWork);
             newThread.Start();

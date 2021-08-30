@@ -201,8 +201,11 @@ namespace Device.Communication
                     return;
                 }
             }
-            this._returnBytes.Add(0x00);
-            this._returnBytes.Add(0x00);//若無回傳時 補0 方便後續判斷時無bug
+            for (int i = 0; i < 5; i++)
+            {
+                this._returnBytes.Add(0x00);//若無回傳時 補0 方便後續判斷時無bug
+            }
+            
             this._sw.Stop();
             this._sw.Reset();
             //DUpdateStatus.Invoke("No Response");  //UI介面觀察狀態
@@ -220,7 +223,7 @@ namespace Device.Communication
             byte[] receiveBytes = new byte[this._client.ReceiveBufferSize];
             int numberOfBytesRead = 0;
             NetworkStream ns = this._client.GetStream();
-            while (this._sw.ElapsedMilliseconds < 50)
+            while (this._sw.ElapsedMilliseconds < _waitResponseTime)
             {
                 this._sw.Start();
                 if (ns.CanRead && ns.DataAvailable)
