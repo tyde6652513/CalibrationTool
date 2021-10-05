@@ -16,9 +16,11 @@ namespace TestSeting
     }
 
     [Serializable]
-    public static class CalInf
+    public static class CalDataCenter
     {
-        public static Dictionary<string, string> data = new Dictionary<string, string>
+        //public static CallibrationData CalData;
+
+        public static SerializableDic<string, string> CalInf = new SerializableDic<string, string>
         {
             {"Time",""},
             {"CalNum",""},
@@ -26,8 +28,7 @@ namespace TestSeting
             {"SubMask","" },
             {"DefaultGateWay","" },
             {"Port","" }
-        };
-        
+        };      
     }
 
 
@@ -46,15 +47,24 @@ namespace TestSeting
     [Serializable]
     public class CurrentCalibrate 
     {
-        public Item2[] Range1 = new Item2[13];
-        public Item2[] Range2 = new Item2[21];
-        public Item2[] Range3 = new Item2[21];
-        public Item2[] Range4 = new Item2[21];
-        public Item2[] Range5 = new Item2[21];
-        public Item2[] Range6 = new Item2[21];
-        public Item2[] Range7 = new Item2[21];
-        public Item2[] Range8 = new Item2[21];
-        public Item2[] Range9 = new Item2[21];
+        public List<Item2> Range1 = new List<Item2>();
+        public List<Item2> Range2 = new List<Item2>();
+        public List<Item2> Range3 = new List<Item2>();
+        public List<Item2> Range4 = new List<Item2>();
+        public List<Item2> Range5 = new List<Item2>();
+        public List<Item2> Range6 = new List<Item2>();
+        public List<Item2> Range7 = new List<Item2>();
+        public List<Item2> Range8 = new List<Item2>();
+        public List<Item2> Range9 = new List<Item2>();
+        //public Item2[] Range1 = new Item2[13];
+        //public Item2[] Range2 = new Item2[21];
+        //public Item2[] Range3 = new Item2[21];
+        //public Item2[] Range4 = new Item2[21];
+        //public Item2[] Range5 = new Item2[21];
+        //public Item2[] Range6 = new Item2[21];
+        //public Item2[] Range7 = new Item2[21];
+        //public Item2[] Range8 = new Item2[21];
+        //public Item2[] Range9 = new Item2[21];
     }
 
     [Serializable]

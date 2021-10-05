@@ -108,7 +108,7 @@ namespace TestSeting
         public int ApertureTimes;
         public int DelayTimeSet;
         public int TimeBase;
-        public decimal BiasVoltage;
+        public double BiasVoltage;
         public byte MeasureRange;
         public int TriggerMode;
 

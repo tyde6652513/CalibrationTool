@@ -52,10 +52,10 @@ namespace GUI
                 _TcpSet[12] = Convert.ToByte(txt13.Text);
 
                 
-                CalInf.data["IP"] = textBox1.Text + "." + textBox2.Text + "." + textBox3.Text + "." + textBox4.Text;
-                CalInf.data["SubMask"] = txt5.Text + "." + txt6.Text + "." + txt7.Text + "." + txt8.Text;
-                CalInf.data["DefaultGateWay"] = txt9.Text + "." + txt10.Text + "." + txt11.Text + "." + txt12.Text;
-                CalInf.data["Port"] = txt13.Text;
+                CalDataCenter.CalInf["IP"] = textBox1.Text + "." + textBox2.Text + "." + textBox3.Text + "." + textBox4.Text;
+                CalDataCenter.CalInf["SubMask"] = txt5.Text + "." + txt6.Text + "." + txt7.Text + "." + txt8.Text;
+                CalDataCenter.CalInf["DefaultGateWay"] = txt9.Text + "." + txt10.Text + "." + txt11.Text + "." + txt12.Text;
+                CalDataCenter.CalInf["Port"] = txt13.Text;
                 return true;
             }
             catch (Exception e)

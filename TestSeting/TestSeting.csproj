@@ -49,6 +49,7 @@
     <Compile Include="CallibrationData.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializableDic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

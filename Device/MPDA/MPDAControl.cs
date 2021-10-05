@@ -289,10 +289,10 @@ namespace Device.MPDA
         /// Set Bias Voltage
         /// </summary>
         /// <param name="biasVoltage">Range = -10 to +10, resolution is 0.005 (V)</param>
-        public void SetBiasVoltage(decimal biasVoltage)
+        public void SetBiasVoltage(double biasVoltage)
         {
             Int16 positiveMask = 2048; // 0X0800
-            decimal resolution = 0.005m;
+            double resolution = 0.005d;
             Int16 biasVoltageDAC = Convert.ToInt16(Math.Abs(biasVoltage) / resolution);
             if (biasVoltage > 0)
             {
@@ -311,9 +311,9 @@ namespace Device.MPDA
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
             this._con.SendCommand(this._byteCmd.ToArray());
-            if ((this._con.ReturnBytes[1] != 0x01) || (Math.Abs(biasVoltage) > 10.235M))
+            if ((this._con.ReturnBytes[1] != 0x01) || (Math.Abs(biasVoltage) > 10.235d))
             {
-                throw new Exception("Delay times set is failed");
+                throw new Exception("Bias set is failed");
             }
         }
 

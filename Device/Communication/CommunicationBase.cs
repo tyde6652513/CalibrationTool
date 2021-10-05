@@ -16,11 +16,14 @@ namespace Device.Communication
     /// </summary>
     public class CommunicationBase
     {
+        public const string STR_NORE = "No Response";
+
         private TcpSetting _tcpSetting;
         private TcpClient _client;
         private Exception _exception;
         private Stopwatch _sw = new Stopwatch();
-        private int _waitResponseTime = 25000; //ms
+        private int _waitResponseTime1 = 25000; //ms for MPDA
+        private const int WAIT_RESPONSE_TIME = 6000; //ms  for smu
         private int _waitDataToBuffer = 100; //ms
         private List<byte> _returnBytes = new List<byte>();
         
@@ -145,7 +148,7 @@ namespace Device.Communication
                 Thread.Sleep(_waitDataToBuffer); //wait data push to buffer
             }
             this._returnBytes.Clear();
-            while (this._sw.ElapsedMilliseconds < _waitResponseTime)
+            while (this._sw.ElapsedMilliseconds < _waitResponseTime1)
             {
                 this._sw.Start();               
                 if (ns.CanRead && ns.DataAvailable)
@@ -183,7 +186,7 @@ namespace Device.Communication
                 Thread.Sleep(_waitDataToBuffer); //wait data push to buffer
             }
             this._returnBytes.Clear();
-            while (this._sw.ElapsedMilliseconds < _waitResponseTime)
+            while (this._sw.ElapsedMilliseconds < _waitResponseTime1)
             {               
                 this._sw.Start();
                 if (ns.CanRead && ns.DataAvailable)
@@ -217,13 +220,13 @@ namespace Device.Communication
         /// <param name="readOffset">Read data from this position to end</param>
         /// <returns>Response of Device</returns>
         /// 
-        public string Receive(int readOffset)
+        public string Receive(int readOffset,int waitResTime = WAIT_RESPONSE_TIME)
         {
             string receiveMsg = string.Empty;
             byte[] receiveBytes = new byte[this._client.ReceiveBufferSize];
             int numberOfBytesRead = 0;
             NetworkStream ns = this._client.GetStream();
-            while (this._sw.ElapsedMilliseconds < _waitResponseTime)
+            while (this._sw.ElapsedMilliseconds < waitResTime)
             {
                 this._sw.Start();
                 if (ns.CanRead && ns.DataAvailable)
@@ -237,7 +240,7 @@ namespace Device.Communication
             }
             this._sw.Stop();
             this._sw.Reset();
-            return "No Response";
+            return STR_NORE;
         }
 
         #endregion

@@ -69,7 +69,7 @@ namespace GUI
                 this._mpdaParameter.DelayTimeSet = (int)(nudDelayTime.Value * 10);
                 this._mpdaParameter.TimeBase = 1;
                 this._mpdaParameter.BiasEnable = chbBiasEnabled.Checked;
-                this._mpdaParameter.BiasVoltage = nudBiasVoltage.Value;
+                this._mpdaParameter.BiasVoltage = (double) nudBiasVoltage.Value;
                 try
                 {
                     this._mPDA.SetAllParameter(this._mpdaParameter);

@@ -43,6 +43,34 @@ namespace Device.K2601
 
         #region >>>Public method<<<
 
+        public bool Config() 
+        {
+            string cmd = string.Empty;
+
+            cmd += "reset()" + "\n";
+            cmd += "display.screen = display.SMUA" + "\n";
+            cmd += "smua.sense = smua.SENSE_LOCAL" + "\n";
+            cmd += "smua.source.autorangei = 0" + "\n";
+            cmd += "smua.measure.autorangei = 0" + "\n";
+            cmd += "print(5)" + "\n";
+            this._communicationBase.SendCommand(cmd);
+            Thread.Sleep(100);// 需要 不然收不完 會在下一次收的時候出現 
+            string str = string.Empty;
+            while (!str.Contains('5'))
+            {
+                str = this._communicationBase.Receive(0);//把一開始資料流的東西 收走
+                if (str == CommunicationBase.STR_NORE)
+                {
+                    return false;
+                }
+            }
+            
+
+            //load function
+            this.LoadFunction_FiMi();
+            return true;
+        }
+
         public void Print() 
         {
             this._script = string.Empty;
@@ -137,25 +165,29 @@ namespace Device.K2601
         public void LoadFunction_FiMi() 
         {
             string script = string.Empty;
-            script += "reset()" + " ";
+            //script += "reset()" + " ";
             script += "function" + " ";
             script += "SiMi(forceI, width)" + " ";
             //script += "print(forceI)" + " ";
             //script += "print(protectionV)" + " ";
 
-            script += "smua.measure.nplc = 0.01" + " ";
+            script += "smua.nvbuffer1.clear()" + " ";           
+            script += "smua.measure.nplc = 0.1" + " ";
+            script += "smua.measure.rangei = forceI" + " ";
             script += "smua.source.func = 0" + " ";
-            script += "smua.source.autorangei = 1" + " ";
-            script += "smua.source.autorangev = 1" + " ";
+            script += "smua.source.rangei = forceI" + " ";
+            //script += "smua.source.autorangev = 1" + " ";
             script += "smua.source.limitv = 1.2" + " ";
             script += "smua.source.output = 1" + " ";
             script += "smua.source.leveli = forceI" + " ";
             script += "delay(width*0.5)" + " ";
-            script += "print(smua.measure.i())" + " ";
+            //script += "print(smua.measure.i())" + " "; 
+            script += "smua.measure.i(smua.nvbuffer1)" + " ";
             script += "delay(width*0.5)" + " ";
             script += "smua.source.leveli = 0" + " ";
             script += "smua.source.output = 0" + " ";
-            script += "waitcomplete()" + " ";                                           
+            script += "waitcomplete()" + " ";
+            script += "printbuffer(1, smua.nvbuffer1.n, smua.nvbuffer1)" + " ";
             script += "end" + "\n";
             this._communicationBase.SendCommand(script);
         }
@@ -163,10 +195,9 @@ namespace Device.K2601
         public void SetMsrtV() 
         {
             string script = string.Empty;
-            script += "reset()" + "\n";
+            //script += "reset()" + "\n";
             script += "smua.source.func = 0" + "\n";
             script += "smua.measure.autorangev = 1" + "\n";
-            script += "smua.measure.nplc = 1" + "\n";
             script += "smua.measure.nplc = 1" + "\n";
             script += "smua.source.leveli = 0" + "\n";
             script += "smua.source.output = 1" + "\n";
@@ -182,7 +213,7 @@ namespace Device.K2601
             //script += "smua.source.output = 0" + "\n";
             //script += "print(smua.measure.v())" + "\n";
             this._communicationBase.SendCommand(script);
-            Thread.Sleep(50);
+            //Thread.Sleep(50); //應該不需要
             return this._communicationBase.Receive(0);
         }
 
