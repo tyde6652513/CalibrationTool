@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace TestSeting
 {
@@ -35,7 +36,8 @@ namespace TestSeting
     [Serializable]
     public class ZeroCalibrate
     {
-        public Item[] TestItem = new Item[2];
+        public List<Item> TestItem = new List<Item>();
+        //public Item[] TestItem = new Item[2];
     }
 
     [Serializable]
@@ -77,15 +79,43 @@ namespace TestSeting
     public class Item 
     {
         public byte Address;
-        public byte[] Value;
+        public string Value;
+
+        //一定要返回 長度4 
+        public byte[] GetCmd() 
+        {
+            //bool flag = true;
+            string[] strArr = Value.Split('-');
+            List<byte> returnByte = new List<byte>();
+
+            if (strArr.Length != 4)
+            {
+                throw new Exception("指令長度不符");
+            }
+
+            foreach (var str in strArr)
+            {
+                byte result;
+                if (byte.TryParse(str, NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out result))
+                {
+                    returnByte.Add(result);
+                }
+                else
+                {
+                    throw new Exception("指令格式不符");
+                }
+               // returnByte.Add(Convert.ToByte(str, 16));
+            }
+            return returnByte.ToArray();
+        }
     }
 
     [Serializable]
-    public class Item1
+    public class Item1 : Item
     {
-        public byte Address;
+        //public byte Address;
         public double SMUMsrtValue;
-        public byte[] ByteCommand;
+        //public string Value;
         
     }
 

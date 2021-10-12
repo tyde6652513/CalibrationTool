@@ -22,7 +22,7 @@ namespace Device.Communication
         private TcpClient _client;
         private Exception _exception;
         private Stopwatch _sw = new Stopwatch();
-        private int _waitResponseTime1 = 25000; //ms for MPDA
+        private int _waitResponseTime1 = 50000; //ms for MPDA
         private const int WAIT_RESPONSE_TIME = 6000; //ms  for smu
         private int _waitDataToBuffer = 100; //ms
         private List<byte> _returnBytes = new List<byte>();
@@ -65,16 +65,30 @@ namespace Device.Communication
         {
             try
             {
+                this._client = new TcpClient();
+                var result = this._client.BeginConnect(this._tcpSetting.IpAddress, this._tcpSetting.Port, null, null);
+
+                var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(3));
+
+                if (!success)
+                {
+                    throw new Exception("Connect Fail");
+                }
+
+                // we have connected
+                this._client.EndConnect(result);
+                return true;
+
                 // Create Tcp client.
-                this._client = new TcpClient(this._tcpSetting.IpAddress, this._tcpSetting.Port);
-                if (this._client.Connected)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                //this._client = new TcpClient(this._tcpSetting.IpAddress, this._tcpSetting.Port);
+                //if (this._client.Connected)
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
             }
             catch (SocketException ex)
             {

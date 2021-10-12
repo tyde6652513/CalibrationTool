@@ -420,6 +420,13 @@ namespace Device.MPDA
 
             temp = this._con.ReturnBytes;
             double[] readData = new double[numOfRead];
+
+            if (temp.Length < 5*numOfRead) //有時會返回怪東西 待查 先保護
+            {
+                //this._errorMsg = "MPDA Read Data Error";
+                return readData;
+            }
+            
             for (int i = 0; i < numOfRead; i++)
             {
                 int startIndex = i * 5;
@@ -427,7 +434,7 @@ namespace Device.MPDA
                 int rawValue = (temp[startIndex + 0] << 24) + (temp[startIndex + 1] << 16)
                              + (temp[startIndex + 2] << 8) + (temp[startIndex + 3]);
                 //double scale = (10e-9) * ( Math.Pow(10, -(this.Communication.ReturnBytes[startIndex + 4])) ); //20210413 Darcy
-                double scale = Math.Pow(10, -((this._con.ReturnBytes[startIndex + 4]) + 9));
+                double scale = Math.Pow(10, -((temp[startIndex + 4]) + 9));
                 readData[i] = rawValue * scale;
             }
             return readData;
@@ -442,14 +449,22 @@ namespace Device.MPDA
             this._byteCmd.Add(temp[1]);
             this._byteCmd.Add(temp[0]);
             this._con.SendCommand(this._byteCmd.ToArray());
+            temp = this._con.ReturnBytes;
             byte[][] readData = new byte[numOfRead][];
+
+            if (temp.Length < 5 * numOfRead) //有時會返回怪東西 待查 先保護
+            {
+                //this._errorMsg = "MPDA Read Data Error";
+                return readData;
+            }
+
             for (int i = 0; i < numOfRead; i++)
             {
                 int startIndex = i * 5;
                 byte[] readTempData = new byte[5]; 
                 for (int j = 0; j < 5; j++)
                 {
-                    readTempData[j] = this._con.ReturnBytes[startIndex + j];
+                    readTempData[j] = temp[startIndex + j];
                 }
                 readData[i] = readTempData;
             }

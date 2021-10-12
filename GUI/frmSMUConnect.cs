@@ -28,8 +28,14 @@ namespace GUI
         private void btnNext_Click(object sender, EventArgs e)
         {
             TcpSet.IpAddress = txtIP.Text;
-            TcpSet.Port = Convert.ToInt32(txtPort.Text);
+
+            int result;
+            Int32.TryParse(txtPort.Text, out result);
+
+            TcpSet.Port = result;
+
             this.DialogResult = DialogResult.Yes;
+
             this.Close();
         }
 

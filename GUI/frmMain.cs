@@ -84,6 +84,7 @@ namespace GUI
         public frmMain()
         {
             InitializeComponent();
+
             this.saveFileDialog1.Filter = "CSV files (*.csv)|*.csv|Excel 2010|*.xlsx";
             this.RestoreBtn();
             this.lblMPDAStatus.Text = "Disconnected";
@@ -248,7 +249,7 @@ namespace GUI
             
         }
 
-        private void updataStatus() 
+        private void UpdataStatus() 
         {
             this.pgb.PerformStep();
             txtStatus.Text += "......Ok\r\n";
@@ -257,7 +258,7 @@ namespace GUI
             this.Refresh();
         }
 
-        private void nextStatus(string str) 
+        private void NextStatus(string str) 
         {
             txtStatus.Text += str;
             txtStatus.SelectionStart = txtStatus.Text.Length;
@@ -291,10 +292,12 @@ namespace GUI
         {
             byte[] temp;
             this._callibrationData = this.DeSerializeXML();
+            this._callibrationData.ZeroCalibrate = new ZeroCalibrate();
+
             //實作更新UI委派
-            DNextStatus dNextStatus = new DNextStatus(nextStatus);
+            DNextStatus dNextStatus = new DNextStatus(NextStatus);
             DIniUI dIniPgb = new DIniUI(InitialUI);
-            DupdataStatus dupdataStatus = new DupdataStatus(updataStatus);
+            DupdataStatus dupdataStatus = new DupdataStatus(UpdataStatus);
             DResBtn dResBtn = new DResBtn(this.RestoreBtn);
 
             this.Invoke(dIniPgb, new object[2] { 0, 9 });
@@ -323,9 +326,9 @@ namespace GUI
                 //
                 this._subFormAgent.MessageBox("短路電路板上的Jumper，進行ADC Driver零點校正 完成後按下一步");
                 //
-                this.Invoke(dNextStatus,"設定量測時間1.6s");
+                this.Invoke(dNextStatus, "設定量測時間1.666666s");
                 //this._mpdaControl.Communication.SendCommand(new byte[5] { 0x93, 0x00, 0x18, 0x6A, 0x00 });
-                this._mpdaControl.SetMsrTime(1600000);
+                this._mpdaControl.SetMsrTime(1666666);
                 if (this._mpdaControl.Communication.ReturnBytes[1] != 0x01)
                 {
                     MessageBox.Show("量測設定失敗");
@@ -335,9 +338,10 @@ namespace GUI
                 this.Invoke(dNextStatus,"量測，存取量測值");
                 this._mpdaControl.InternalTrigger();
                 temp = this._mpdaControl.ReadData(1)[0];
-                this._callibrationData.ZeroCalibrate.TestItem[0] = new Item();
-                this._callibrationData.ZeroCalibrate.TestItem[0].Address = 0x14;
-                this._callibrationData.ZeroCalibrate.TestItem[0].Value = temp.Take(4).ToArray();
+                Item item = new Item();
+                item.Address = 0x14;
+                item.Value = BitConverter.ToString(temp.Take(4).ToArray());
+                this._callibrationData.ZeroCalibrate.TestItem.Add(item);
                 this.Invoke(dupdataStatus);
                 //           
                 this._subFormAgent.MessageBox("拔去電路板上的Jumper，短路Input端(BNC內外層短路) 完成後按下一步");
@@ -349,17 +353,20 @@ namespace GUI
                 this.Invoke(dNextStatus,"量測，存取量測值");
                 this._mpdaControl.InternalTrigger();
                 temp = this._mpdaControl.ReadData(1)[0];
-                this._callibrationData.ZeroCalibrate.TestItem[1] = new Item();
-                this._callibrationData.ZeroCalibrate.TestItem[1].Address = 0x15;
-                this._callibrationData.ZeroCalibrate.TestItem[1].Value = temp.Take(4).ToArray();
+                item = new Item();
+                item.Address = 0x15;
+                item.Value = BitConverter.ToString(temp.Take(4).ToArray());
+                this._callibrationData.ZeroCalibrate.TestItem.Add(item);
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus,"將校正值寫入RAM");
                 this._mpdaControl.EnableRam();
-                for (int i = 0; i < this._callibrationData.ZeroCalibrate.TestItem.Length; i++)
+
+                foreach (var testItem in this._callibrationData.ZeroCalibrate.TestItem)
                 {
-                    this._mpdaControl.SetToRam(this._callibrationData.ZeroCalibrate.TestItem[i].Address, this._callibrationData.ZeroCalibrate.TestItem[i].Value);
+                    this._mpdaControl.SetToRam(testItem.Address, testItem.GetCmd());
                 }
+
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus,"將校正值寫入Flash");
@@ -378,15 +385,13 @@ namespace GUI
          }
 
         private void OffsetCalibration() 
-        {
-            
-            
+        {                     
             this._callibrationData = this.DeSerializeXML();
             byte[] temp;
             //實作更新UI委派
-            DNextStatus dNextStatus = new DNextStatus(nextStatus);
+            DNextStatus dNextStatus = new DNextStatus(NextStatus);
             DIniUI dIniPgb = new DIniUI(InitialUI);
-            DupdataStatus dupdataStatus = new DupdataStatus(updataStatus);
+            DupdataStatus dupdataStatus = new DupdataStatus(UpdataStatus);
             DResBtn dResBtn = new DResBtn(this.RestoreBtn);
 
             this.Invoke(dIniPgb, new object[2] { 0, 30 });
@@ -408,9 +413,10 @@ namespace GUI
                     //
                     this.Invoke(dNextStatus,"存取調整值");
                     temp = this._mpdaControl.ReadOffset();
-                    this._callibrationData.OffsetCalibrate.TestItem[i-1] = new Item();
-                    this._callibrationData.OffsetCalibrate.TestItem[i-1].Address = (byte) (0x16 + (i-1));
-                    this._callibrationData.OffsetCalibrate.TestItem[i-1].Value = temp;
+                    Item item = new Item();
+                    item.Address = (byte) (0x16 + (i-1));
+                    item.Value = BitConverter.ToString(temp);
+                    this._callibrationData.OffsetCalibrate.TestItem[i-1] = item;
                     this.Invoke(dupdataStatus);
                     //
                 }
@@ -419,7 +425,7 @@ namespace GUI
                 this._mpdaControl.EnableRam();
                 for (int i = 0; i < this._callibrationData.OffsetCalibrate.TestItem.Length; i++)
                 {
-                    this._mpdaControl.SetToRam(this._callibrationData.OffsetCalibrate.TestItem[i].Address, this._callibrationData.OffsetCalibrate.TestItem[i].Value);
+                    this._mpdaControl.SetToRam(this._callibrationData.OffsetCalibrate.TestItem[i].Address, this._callibrationData.OffsetCalibrate.TestItem[i].GetCmd());
                 }
                 this.Invoke(dupdataStatus);
                 //
@@ -441,10 +447,12 @@ namespace GUI
         private void CurrentCalibration() 
         {
             this._callibrationData = this.DeSerializeXML();
+            this._callibrationData.CurrentCalibrate = new CurrentCalibrate();
+
             //實作更新UI委派
-            DNextStatus dNextStatus = new DNextStatus(nextStatus);
+            DNextStatus dNextStatus = new DNextStatus(NextStatus);
             DIniUI dIniPgb = new DIniUI(InitialUI);
-            DupdataStatus dupdataStatus = new DupdataStatus(updataStatus);
+            DupdataStatus dupdataStatus = new DupdataStatus(UpdataStatus);
             DResBtn dResBtn = new DResBtn(this.RestoreBtn);
 
             this.Invoke(dIniPgb, new object[2] { 0, 212 });
@@ -459,9 +467,9 @@ namespace GUI
                 //
                 this._subFormAgent.MessageBox("Keithley接線到MPDA，F+接BNC中心，F-接BNC外層");
                 //
-                this.Invoke(dNextStatus,"設定量測時間1.6s");
+                this.Invoke(dNextStatus, "設定量測時間1.666666s");
                 //this._mpdaControl.Communication.SendCommand(new byte[5] { 0x93, 0x00, 0x18, 0x6A, 0x00 });
-                this._mpdaControl.SetMsrTime(1600000);
+                this._mpdaControl.SetMsrTime(1666666);
                 if (this._mpdaControl.Communication.ReturnBytes[1] != 0x01)
                 {
                     MessageBox.Show("量測設定失敗");
@@ -500,7 +508,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位1資料");
-                this._callibrationData.CurrentCalibrate.Range1.Clear();
+                //this._callibrationData.CurrentCalibrate.Range1.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -548,7 +556,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位2資料");
-                this._callibrationData.CurrentCalibrate.Range2.Clear();
+                //this._callibrationData.CurrentCalibrate.Range2.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -596,7 +604,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位3資料");
-                this._callibrationData.CurrentCalibrate.Range3.Clear();
+                //this._callibrationData.CurrentCalibrate.Range3.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -645,7 +653,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位4資料");
-                this._callibrationData.CurrentCalibrate.Range4.Clear();
+                //this._callibrationData.CurrentCalibrate.Range4.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -693,7 +701,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位5資料");
-                this._callibrationData.CurrentCalibrate.Range5.Clear();
+                //this._callibrationData.CurrentCalibrate.Range5.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -741,7 +749,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位6資料");
-                this._callibrationData.CurrentCalibrate.Range6.Clear();
+                //this._callibrationData.CurrentCalibrate.Range6.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -789,7 +797,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位7資料");
-                this._callibrationData.CurrentCalibrate.Range7.Clear();
+                //this._callibrationData.CurrentCalibrate.Range7.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -837,7 +845,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位8資料");
-                this._callibrationData.CurrentCalibrate.Range8.Clear();
+                //this._callibrationData.CurrentCalibrate.Range8.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -885,7 +893,7 @@ namespace GUI
                 this.Invoke(dupdataStatus);
                 //
                 this.Invoke(dNextStatus, "暫存檔位9資料");
-                this._callibrationData.CurrentCalibrate.Range9.Clear();
+                //this._callibrationData.CurrentCalibrate.Range9.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
@@ -916,9 +924,9 @@ namespace GUI
         {
             this._callibrationData = this.DeSerializeXML();
             //實作更新UI委派
-            DNextStatus dNextStatus = new DNextStatus(nextStatus);
+            DNextStatus dNextStatus = new DNextStatus(NextStatus);
             DIniUI dIniPgb = new DIniUI(InitialUI);
-            DupdataStatus dupdataStatus = new DupdataStatus(updataStatus);
+            DupdataStatus dupdataStatus = new DupdataStatus(UpdataStatus);
             DResBtn dResBtn = new DResBtn(this.RestoreBtn);
 
             this.Invoke(dIniPgb, new object[2] { 0, 45 });
@@ -981,9 +989,11 @@ namespace GUI
                     this.Invoke(dNextStatus,"暫存資料");
                     int minIndex = Array.IndexOf(difSmuMsrt.ToArray(), difSmuMsrt.Min());
                     this._callibrationData.BiasCalibrate.TestItem[j+10] = new Item1();
-                    this._callibrationData.BiasCalibrate.TestItem[j + 10].Address = (byte) (0xDC + j + 10); //0xDC 開始
-                    this._callibrationData.BiasCalibrate.TestItem[j + 10].SMUMsrtValue = SmuMsrt[minIndex];
-                    this._callibrationData.BiasCalibrate.TestItem[j + 10].ByteCommand = byteCmd[minIndex];
+                    Item1 item = new Item1();
+                    item.Address = (byte)(0xDC + j + 10); //0xDC 開始
+                    item.SMUMsrtValue = SmuMsrt[minIndex];
+                    item.Value = BitConverter.ToString(byteCmd[minIndex]);
+                    this._callibrationData.BiasCalibrate.TestItem[j + 10] = item;
                     this.Invoke(dupdataStatus);
                 }
                 //
@@ -1017,9 +1027,9 @@ namespace GUI
         {
             this._callibrationData = this.DeSerializeXML();
             //實作更新UI委派
-            DNextStatus dNextStatus = new DNextStatus(nextStatus);
+            DNextStatus dNextStatus = new DNextStatus(NextStatus);
             DIniUI dIniPgb = new DIniUI(InitialUI);
-            DupdataStatus dupdataStatus = new DupdataStatus(updataStatus);
+            DupdataStatus dupdataStatus = new DupdataStatus(UpdataStatus);
             DResBtn dResBtn = new DResBtn(this.RestoreBtn);
 
             this.Invoke(dIniPgb, new object[2] { 0, 10 });
@@ -1132,7 +1142,7 @@ namespace GUI
                         MessageBox.Show("Bias校正資料缺失，請檢察xml檔或重新校正並寫入");
                         return;
                     }
-                    this._mpdaControl.SetToRam(item.Address, item.ByteCommand);
+                    this._mpdaControl.SetToRam(item.Address, item.GetCmd());
                 }               
                 this.Invoke(dupdataStatus);
                 //
@@ -1209,7 +1219,7 @@ namespace GUI
                 strList.Add(string.Empty);
                 strList.Add(string.Empty);
                 strList.Add(string.Empty);
-                strList.Add(ExcTran(BitConverter.ToString(item.Value).Replace("-", "")));
+                strList.Add(ExcTran(item.Value));
                 newLine = string.Join(",", strList);
                 sb.AppendLine(newLine);
             } 
@@ -1233,7 +1243,7 @@ namespace GUI
                 strList.Add(string.Empty);
                 strList.Add(string.Empty);
                 strList.Add(string.Empty);
-                strList.Add(ExcTran(BitConverter.ToString(item.Value).Replace("-", "")));
+                strList.Add(ExcTran(item.Value));
                 newLine = string.Join(",", strList);
                 sb.AppendLine(newLine);
                 i++;
@@ -1295,7 +1305,7 @@ namespace GUI
                     strList.Add(item.DiffValue.ToString());
                     byte[] temp = BitConverter.GetBytes(Convert.ToInt32(CheckINT32(item.DiffValue * Math.Pow(10, j + 9))));
                     Array.Reverse(temp);
-                    strList.Add(ExcTran(BitConverter.ToString(temp).Replace("-", "")));
+                    strList.Add(ExcTran(BitConverter.ToString(temp)));
                     newLine = string.Join(",", strList);
                     sb.AppendLine(newLine);
                 }
@@ -1319,7 +1329,7 @@ namespace GUI
                 strList.Add(item.SMUMsrtValue.ToString());
                 strList.Add(string.Empty);
                 strList.Add(string.Empty);
-                strList.Add(ExcTran(BitConverter.ToString(item.ByteCommand).Replace("-", "")));
+                strList.Add(ExcTran(item.Value));
                 newLine = string.Join(",", strList);
                 sb.AppendLine(newLine);
             } 

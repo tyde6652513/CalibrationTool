@@ -46,11 +46,11 @@
             this.tsmCurrent = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmBias = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmPause = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPIV = new System.Windows.Forms.ToolStripMenuItem();
             this.資料存取ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmWrite = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmOutputExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.tsmiPIV = new System.Windows.Forms.ToolStripMenuItem();
             this.mspTool.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -217,6 +217,13 @@
             this.tsmPause.Text = "校正暫停";
             this.tsmPause.Click += new System.EventHandler(this.tsmPause_Click);
             // 
+            // tsmiPIV
+            // 
+            this.tsmiPIV.Name = "tsmiPIV";
+            this.tsmiPIV.Size = new System.Drawing.Size(89, 28);
+            this.tsmiPIV.Text = "PIV測試";
+            this.tsmiPIV.Click += new System.EventHandler(this.tsmiPIV_Click);
+            // 
             // 資料存取ToolStripMenuItem
             // 
             this.資料存取ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -239,13 +246,6 @@
             this.tsmOutputExcel.Size = new System.Drawing.Size(200, 28);
             this.tsmOutputExcel.Text = "輸出Excel檔案";
             this.tsmOutputExcel.Click += new System.EventHandler(this.tsmOutputExcel_Click);
-            // 
-            // tsmiPIV
-            // 
-            this.tsmiPIV.Name = "tsmiPIV";
-            this.tsmiPIV.Size = new System.Drawing.Size(89, 28);
-            this.tsmiPIV.Text = "PIV測試";
-            this.tsmiPIV.Click += new System.EventHandler(this.tsmiPIV_Click);
             // 
             // frmMain
             // 

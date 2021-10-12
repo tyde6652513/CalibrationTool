@@ -197,9 +197,11 @@ namespace Device.K2601
             string script = string.Empty;
             //script += "reset()" + "\n";
             script += "smua.source.func = 0" + "\n";
-            script += "smua.measure.autorangev = 1" + "\n";
+            script += "smua.measure.autorangev = 1" + "\n"; 
+            script += "display.smua.measure.func = MEASURE_DCVOLTS" + "\n";
             script += "smua.measure.nplc = 1" + "\n";
             script += "smua.source.leveli = 0" + "\n";
+            script += "smua.source.limitv = 20" + "\n";
             script += "smua.source.output = 1" + "\n";
             //script += "print(smua.measure.v())" + "\n";
             this._communicationBase.SendCommand(script);
