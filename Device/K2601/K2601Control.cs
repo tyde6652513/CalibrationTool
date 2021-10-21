@@ -172,7 +172,7 @@ namespace Device.K2601
             //script += "print(protectionV)" + " ";
 
             script += "smua.nvbuffer1.clear()" + " ";           
-            script += "smua.measure.nplc = 0.1" + " ";
+            script += "smua.measure.nplc = 15" + " ";
             script += "smua.measure.rangei = forceI" + " ";
             script += "smua.source.func = 0" + " ";
             script += "smua.source.rangei = forceI" + " ";
@@ -199,7 +199,7 @@ namespace Device.K2601
             script += "smua.source.func = 0" + "\n";
             script += "smua.measure.autorangev = 1" + "\n"; 
             script += "display.smua.measure.func = MEASURE_DCVOLTS" + "\n";
-            script += "smua.measure.nplc = 1" + "\n";
+            script += "smua.measure.nplc = 15" + "\n";
             script += "smua.source.leveli = 0" + "\n";
             script += "smua.source.limitv = 20" + "\n";
             script += "smua.source.output = 1" + "\n";

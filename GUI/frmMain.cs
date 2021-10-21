@@ -515,7 +515,7 @@ namespace GUI
                     item2.SMUMsrtValue = SmuMsrtValue[i];
                     item2.MPDAMsrtValue = temp[i];
                     item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
-                    item2.Address = (byte)(0x23 + i);
+                    item2.Address = (byte)(0x1F + i);
 
                     this._callibrationData.CurrentCalibrate.Range1.Add(item2);
                 }

@@ -19,7 +19,6 @@ namespace Device.MPDA
         #region >>>private field<<<
 
         private CommunicationBase _con;
-        private IOSetting _iOSet;
         private List<byte> _byteCmd = new List<byte>();
 
 
@@ -39,7 +38,7 @@ namespace Device.MPDA
             {
                 throw this._con.Exception;
             }
-            this._iOSet = new IOSetting(this._con);
+            //this._iOSet = new IOSetting(this._con);
         }
         #endregion
 
@@ -48,11 +47,6 @@ namespace Device.MPDA
         public CommunicationBase Communication
         {
             get { return _con; }
-        }
-
-        public IOSetting IOSet
-        {
-            get { return _iOSet; }
         }
 
         public int MsrTime
@@ -348,7 +342,7 @@ namespace Device.MPDA
         }
 
         /// <summary>
-        /// Set Trigger Mode
+        /// Set Trigger Mode (第二版以後應該用不到)
         /// </summary>
         /// <param name="modeSelect">
         /// 1:硬體觸發; 2:上升觸發; 3:窗型擷取; 4:實時傳輸; 5:Bias觸發;
@@ -364,6 +358,119 @@ namespace Device.MPDA
                 throw new Exception("Trigger mode set is failed");
             } 
         }
+
+        //public void SetTrigIn(int io = 1, ETrigEdge trigEdge = ETrigEdge.FALLING_EDGE, ETrigType trigType = ETrigType.HW)
+        //{
+        //    int cmd = 0;
+        //    this._byteCmd.Clear();
+        //    this._byteCmd.Add(0x61);
+        //    this._byteCmd.Add((byte)io);
+
+        //    cmd += (int)trigEdge << 2;
+        //    cmd += (int)trigType << 1;
+
+        //    this._byteCmd.Add((byte)cmd);
+
+        //    this._byteCmd.Add(0x00); //filter 先都填0 用不太到
+
+        //    this._con.SendCommand(this._byteCmd.ToArray());
+        //    if (this._con.ReturnBytes[1] != 0x01)
+        //    {
+        //        this._errorMsg = "TrigInIO set is failed";
+        //        //throw new Exception("Trigger mode set is failed");
+        //    } 
+ 
+        //}
+
+        ///// <summary>
+        ///// 只有 io 2~4 可以用作 HW TrigOut,尚未想到做法可卡住
+        ///// </summary>
+        ///// <param name="io">
+        ///// just for 2~4 (20211007)
+        ///// </param>
+        ///// <param name="delayTime">
+        ///// (0.1us)  delayTime = 0~65535
+        ///// </param>
+        ///// <param name="pulseWidth">
+        ///// (0.1us)  pulseWidth = 0~65535, default=10us
+        ///// </param>
+        //public void SetTrigOut(int io = 2,ETrigLevel trigLevel = ETrigLevel.High, ETrigOutForm trigOutForm = ETrigOutForm.Pulse, 
+        //                        ETrigType trigType = ETrigType.HW, EStimulus stimulus = EStimulus.MsrtStart, int delayTime = 1,
+        //                        int pulseWidth = 100) 
+        //{
+            
+
+        //    #region >>>mode set<<<
+
+        //    int cmd = 0;
+
+        //    this._byteCmd.Clear();
+        //    this._byteCmd.Add(0x61); //same as set TrigIn
+        //    this._byteCmd.Add((byte)io);
+
+        //    cmd += (int)trigOutForm << 4;
+        //    cmd += (int)trigLevel << 2;
+        //    cmd += (int)trigType << 1;
+        //    cmd += 1; //for out , 1
+
+        //    this._byteCmd.Add((byte)cmd);
+
+        //    this._byteCmd.Add((byte)stimulus); 
+
+        //    this._con.SendCommand(this._byteCmd.ToArray());
+        //    if (this._con.ReturnBytes[1] != 0x01)
+        //    {
+        //        this._errorMsg = "TrigOutIO set is failed";              
+        //    }  
+
+        //    #endregion
+
+        //    #region >>>Time set<<<
+
+        //    this._byteCmd.Clear();
+        //    this._byteCmd.Add(0x63); //same as set TrigIn
+        //    this._byteCmd.Add((byte)io);
+
+        //    byte[] temp = BitConverter.GetBytes((ushort)delayTime);
+        //    this._byteCmd.Add(temp[1]);
+        //    this._byteCmd.Add(temp[0]);
+
+        //    temp = BitConverter.GetBytes((ushort)pulseWidth);
+        //    this._byteCmd.Add(temp[1]);
+        //    this._byteCmd.Add(temp[0]);
+
+        //    this._byteCmd.Add(0x00);
+        //    this._byteCmd.Add(0x01); //Timebase這裡先寫死為最小 100ns 日後有需要再改
+
+        //    this._con.SendCommand(this._byteCmd.ToArray());
+        //    if (this._con.ReturnBytes[1] != 0x01)
+        //    {
+        //        this._errorMsg = "TrigOutIO set is failed";
+        //    }
+
+        //    #endregion
+
+        //}
+
+        //public void AssertIO(int io) 
+        //{
+        //    if ( (io<1) || (io>6) )
+        //    {
+        //        return;
+        //    }
+        //    int shift = io - 1;
+
+        //    this._byteCmd.Clear();
+        //    this._byteCmd.Add(0x65);
+        //    this._byteCmd.Add((byte)(0x01 << shift));
+        //    this._con.SendCommand(this._byteCmd.ToArray());
+        //    if (this._con.ReturnBytes[1] != 0x01)
+        //    {
+        //        this._errorMsg = "AssertIO is failed";
+        //    } 
+        //}
+
+
 
         public void SetToRam(byte ramAddress, byte[] setValue)
         {
