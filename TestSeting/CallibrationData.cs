@@ -43,7 +43,7 @@ namespace TestSeting
     [Serializable]
     public class OffsetCalibrate
     {
-        public Item[] TestItem = new Item[9];
+        public List<Item> TestItem = new List<Item>();
     }
 
     [Serializable]
@@ -72,7 +72,8 @@ namespace TestSeting
     [Serializable]
     public class BiasCalibrate 
     {
-        public Item1[] TestItem = new Item1[21];
+        public List<Item1> TestItem = new List<Item1>();
+        //public Item1[] TestItem = new Item1[21];
     }
 
     [Serializable]
@@ -85,6 +86,11 @@ namespace TestSeting
         public byte[] GetCmd() 
         {
             //bool flag = true;
+            if (Value==null)
+            {
+                throw new Exception("指令無讀入");
+            }
+
             string[] strArr = Value.Split('-');
             List<byte> returnByte = new List<byte>();
 
@@ -126,5 +132,6 @@ namespace TestSeting
         public double SMUMsrtValue;
         public double MPDAMsrtValue;
         public double DiffValue;
+        public double MPDARpt;
     }
 }

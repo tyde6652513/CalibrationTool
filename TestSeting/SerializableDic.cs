@@ -55,5 +55,21 @@ namespace TestSeting
         {
             return null;
         }
+
+        public string GetValue(TKey key) 
+        {
+            TValue outStr;
+
+            this.TryGetValue(key, out outStr);
+
+            if (outStr==null)
+            {
+                return string.Empty;
+            }
+
+            return outStr.ToString();
+            
+        }
+
     }
 }

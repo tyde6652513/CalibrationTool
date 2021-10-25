@@ -253,6 +253,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(380, 446);
+            this.Controls.Add(this.mspTool);
             this.Controls.Add(this.lblSMUStatus);
             this.Controls.Add(this.lblMPDAStatus);
             this.Controls.Add(this.label3);
@@ -260,11 +261,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pgb);
             this.Controls.Add(this.txtStatus);
-            this.Controls.Add(this.mspTool);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.mspTool;
             this.Name = "frmMain";
             this.Text = "Calibration";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.mspTool.ResumeLayout(false);
             this.mspTool.PerformLayout();
             this.ResumeLayout(false);

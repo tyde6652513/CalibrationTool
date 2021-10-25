@@ -578,6 +578,17 @@ namespace Device.MPDA
             return readData;
         }
 
+        /// <summary>
+        /// Read status  -> 0x01:dle 、 0x02:wait 、 0x03:busy
+        /// </summary>       
+        public byte ReadStatus()
+        {
+            this._byteCmd.Clear();
+            this._byteCmd.Add(0x46);
+            this._con.SendCommand(this._byteCmd.ToArray());
+            return this._con.ReturnBytes[1];
+        }
+
         public void SetAllParameter(MPDAParameter msrItem)
         {
             try
@@ -594,6 +605,8 @@ namespace Device.MPDA
                 throw ex;
             }
         }
+
+
 
 
 

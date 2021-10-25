@@ -52,6 +52,8 @@ namespace GUI
         private SubFormAgent _subFormAgent = new SubFormAgent();
 
         //other
+        private bool _frmOpen;
+
         private TcpSetting _tcpSet;
         private MPDAControl _mpdaControl;
         private K2601Control _k2601Control;
@@ -103,6 +105,15 @@ namespace GUI
                 {
                     XmlSerializer oXmlSerializer = new XmlSerializer(typeof(SerializableDic<string, string>));
                     oXmlSerializer.Serialize(oFileStream, CalDataCenter.CalInf);
+                    oFileStream.Close();
+                }
+            }
+            else
+            {
+                using (FileStream oFileStream = new FileStream(dirPath + @"\" + "CalInf.xml", FileMode.Open))
+                {
+                    XmlSerializer oXmlSerializer = new XmlSerializer(typeof(SerializableDic<string, string>));
+                    CalDataCenter.CalInf = (SerializableDic<string, string>)oXmlSerializer.Deserialize(oFileStream);
                     oFileStream.Close();
                 }
             }
@@ -377,9 +388,14 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                this.Invoke(dResBtn);
+                
                 MessageBox.Show(ex.Message);
-                this.Invoke(dNextStatus,"零點校正終止");
+
+                if (this._frmOpen)
+                {
+                    this.Invoke(dNextStatus, "零點校正終止");
+                    this.Invoke(dResBtn);
+                }
             }
             this.SerializeXML();
          }
@@ -416,16 +432,16 @@ namespace GUI
                     Item item = new Item();
                     item.Address = (byte) (0x16 + (i-1));
                     item.Value = BitConverter.ToString(temp);
-                    this._callibrationData.OffsetCalibrate.TestItem[i-1] = item;
+                    this._callibrationData.OffsetCalibrate.TestItem.Add(item);
                     this.Invoke(dupdataStatus);
                     //
                 }
                 //
                 this.Invoke(dNextStatus,"將校正值寫入RAM");
                 this._mpdaControl.EnableRam();
-                for (int i = 0; i < this._callibrationData.OffsetCalibrate.TestItem.Length; i++)
+                foreach (var item1 in this._callibrationData.OffsetCalibrate.TestItem)
                 {
-                    this._mpdaControl.SetToRam(this._callibrationData.OffsetCalibrate.TestItem[i].Address, this._callibrationData.OffsetCalibrate.TestItem[i].GetCmd());
+                    this._mpdaControl.SetToRam(item1.Address, item1.GetCmd());
                 }
                 this.Invoke(dupdataStatus);
                 //
@@ -437,8 +453,12 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                this.Invoke(dNextStatus,"Offset校正終止");
-                this.Invoke(dResBtn);
+                if (this._frmOpen)
+                {
+                    this.Invoke(dNextStatus, "Offset校正終止");
+                    this.Invoke(dResBtn);
+                }
+                
                 MessageBox.Show(ex.Message);
             }
             this.SerializeXML();
@@ -457,9 +477,14 @@ namespace GUI
 
             this.Invoke(dIniPgb, new object[2] { 0, 212 });
 
-            double[] temp;           
+
+            int repeatMsrtTimes = 10;
             string SmuReturnData;
+
             List<double> SmuMsrtValue = new List<double>(); //存取SMU量測I值this.Invoke(dupdataStatus);
+            List<double> MpdaMsrtValue = new List<double>(); //存取MPDA量測I值
+            List<double> MpdaRpt = new List<double>(); //存取MPDA Repeatability
+
 
             try
             {
@@ -467,17 +492,17 @@ namespace GUI
                 //
                 this._subFormAgent.MessageBox("Keithley接線到MPDA，F+接BNC中心，F-接BNC外層");
                 //
-                this.Invoke(dNextStatus, "設定量測時間1.666666s");
+                this.Invoke(dNextStatus, "設定量測時間166.6ms");
                 //this._mpdaControl.Communication.SendCommand(new byte[5] { 0x93, 0x00, 0x18, 0x6A, 0x00 });
-                this._mpdaControl.SetMsrTime(1666666);
+                this._mpdaControl.SetMsrTime(166666);
                 if (this._mpdaControl.Communication.ReturnBytes[1] != 0x01)
                 {
                     MessageBox.Show("量測設定失敗");
                 }
                 this.Invoke(dupdataStatus);
 
-                /// Loop 輸出電流 -60 ~ 60 (mA)共量測13筆
-                #region >>>-60 ~ 60 (mA)<<<
+                /// Loop 輸出電流 -100 ~ 100 (mA)共量測13筆
+                #region >>>-100 ~ 100 (mA)<<<
 
                 //
                 this.Invoke(dNextStatus, "設定檔位到" + dicRange[1]);
@@ -492,29 +517,34 @@ namespace GUI
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 10) + "(mA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + (i / 100) + ", 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+
+                    //this._k2601Control.CommunicationBase.SendCommand("SiMi(" + (i / 100) + ", 2)");
+                    this._k2601Control.Open_FiMi((i / 100));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+                    
                     SmuMsrtValue.Add(result);
-                    // Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
                     cnt++;
                 }
                 //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
-                //
                 this.Invoke(dNextStatus, "暫存檔位1資料");
-                //this._callibrationData.CurrentCalibrate.Range1.Clear();
+
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0x1F + i);
 
                     this._callibrationData.CurrentCalibrate.Range1.Add(item2);
@@ -534,35 +564,42 @@ namespace GUI
                 this.Invoke(dNextStatus, "清除資料");
                 this._mpdaControl.ClearBuffer();
                 SmuMsrtValue.Clear();
+                MpdaMsrtValue.Clear();
+                MpdaRpt.Clear();
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + i + "(mA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-3, 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+                    //this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-3, 2)");
+                    this._k2601Control.Open_FiMi((i / 1000));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+
                     SmuMsrtValue.Add(result);
-                    //Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
-                    cnt++;
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
+                    cnt++;
                 }
-                //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
+
                 //
                 this.Invoke(dNextStatus, "暫存檔位2資料");
-                //this._callibrationData.CurrentCalibrate.Range2.Clear();
+
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0x34 + i);
 
                     this._callibrationData.CurrentCalibrate.Range2.Add(item2);
@@ -582,35 +619,41 @@ namespace GUI
                 this.Invoke(dNextStatus, "清除資料");
                 this._mpdaControl.ClearBuffer();
                 SmuMsrtValue.Clear();
+                MpdaMsrtValue.Clear();
+                MpdaRpt.Clear();
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
-                for (int i = -10; i <= 10; i++)
+                for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 100) + "(uA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-4, 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+
+                    this._k2601Control.Open_FiMi((i / 10000));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+
                     SmuMsrtValue.Add(result);
-                    //Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
                     cnt++;
                 }
-                //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
+
                 //
                 this.Invoke(dNextStatus, "暫存檔位3資料");
-                //this._callibrationData.CurrentCalibrate.Range3.Clear();
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0x49 + i);
 
                     this._callibrationData.CurrentCalibrate.Range3.Add(item2);                   
@@ -631,35 +674,41 @@ namespace GUI
                 this.Invoke(dNextStatus, "清除資料");
                 this._mpdaControl.ClearBuffer();
                 SmuMsrtValue.Clear();
+                MpdaMsrtValue.Clear();
+                MpdaRpt.Clear();
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
-                for (int i = -10; i <= 10; i++)
+                for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 10) + "(uA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-5, 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+                    this._k2601Control.Open_FiMi((i / 100000));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+
                     SmuMsrtValue.Add(result);
-                    //Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
                     cnt++;
                 }
-                //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
+
                 //
                 this.Invoke(dNextStatus, "暫存檔位4資料");
-                //this._callibrationData.CurrentCalibrate.Range4.Clear();
+
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0x5E + i);
 
                     this._callibrationData.CurrentCalibrate.Range4.Add(item2);
@@ -679,35 +728,41 @@ namespace GUI
                 this.Invoke(dNextStatus, "清除資料");
                 this._mpdaControl.ClearBuffer();
                 SmuMsrtValue.Clear();
+                MpdaMsrtValue.Clear();
+                MpdaRpt.Clear();
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
-                for (int i = -10; i <= 10; i++)
+                for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + i + "(uA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-6, 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+                    this._k2601Control.Open_FiMi((i / 1000000));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+
                     SmuMsrtValue.Add(result);
-                    //Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
                     cnt++;
                 }
-                //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
+
                 //
                 this.Invoke(dNextStatus, "暫存檔位5資料");
-                //this._callibrationData.CurrentCalibrate.Range5.Clear();
+
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0x73 + i);
 
                     this._callibrationData.CurrentCalibrate.Range5.Add(item2);
@@ -727,35 +782,41 @@ namespace GUI
                 this.Invoke(dNextStatus, "清除資料");
                 this._mpdaControl.ClearBuffer();
                 SmuMsrtValue.Clear();
+                MpdaMsrtValue.Clear();
+                MpdaRpt.Clear();
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
-                for (int i = -10; i <= 10; i++)
+                for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 100) + "(nA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-7, 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+                    this._k2601Control.Open_FiMi((i / 10000000));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+
                     SmuMsrtValue.Add(result);
-                    //Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
                     cnt++;
                 }
-                //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
+
                 //
                 this.Invoke(dNextStatus, "暫存檔位6資料");
-                //this._callibrationData.CurrentCalibrate.Range6.Clear();
+
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0x88 + i);
 
                     this._callibrationData.CurrentCalibrate.Range6.Add(item2);
@@ -775,35 +836,41 @@ namespace GUI
                 this.Invoke(dNextStatus, "清除資料");
                 this._mpdaControl.ClearBuffer();
                 SmuMsrtValue.Clear();
+                MpdaMsrtValue.Clear();
+                MpdaRpt.Clear();
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
-                for (int i = -10; i <= 10; i++)
+                for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 10) + "(nA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-8, 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+                    this._k2601Control.Open_FiMi((i / 100000000));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+
                     SmuMsrtValue.Add(result);
-                    //Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
                     cnt++;
                 }
-                //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
+
                 //
                 this.Invoke(dNextStatus, "暫存檔位7資料");
-                //this._callibrationData.CurrentCalibrate.Range7.Clear();
+
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0x9D + i);
 
                     this._callibrationData.CurrentCalibrate.Range7.Add(item2);
@@ -823,35 +890,43 @@ namespace GUI
                 this.Invoke(dNextStatus, "清除資料");
                 this._mpdaControl.ClearBuffer();
                 SmuMsrtValue.Clear();
+                MpdaMsrtValue.Clear();
+                MpdaRpt.Clear();
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
-                for (int i = -10; i <= 10; i++)
+                repeatMsrtTimes = 50;//for 8、9 檔位
+
+                for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + i + "(nA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-9, 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+                    this._k2601Control.Open_FiMi((i / 1000000000));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+
                     SmuMsrtValue.Add(result);
-                    //Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
                     cnt++;
                 }
-                //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
+
                 //
                 this.Invoke(dNextStatus, "暫存檔位8資料");
-                //this._callibrationData.CurrentCalibrate.Range8.Clear();
+
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0xB2 + i);
 
                     this._callibrationData.CurrentCalibrate.Range8.Add(item2);
@@ -871,35 +946,41 @@ namespace GUI
                 this.Invoke(dNextStatus, "清除資料");
                 this._mpdaControl.ClearBuffer();
                 SmuMsrtValue.Clear();
+                MpdaMsrtValue.Clear();
+                MpdaRpt.Clear();
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
-                for (int i = -10; i <= 10; i++)
+                for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 100) + "(pA), 開始量測");
-                    this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-10, 2)");
-                    this._mpdaControl.InternalTrigger();
-                    SmuReturnData = this._k2601Control.CommunicationBase.Receive(0);
-                    SmuReturnData = SmuReturnData.Replace("\r\n", "");
-                    Double.TryParse(SmuReturnData, out double result);
+                    this._k2601Control.Open_FiMi((i / 10000000000));
+
+                    Thread.Sleep(1000); //開電後 延遲 用以穩定
+
+                    this.RepeatMsr(repeatMsrtTimes, out double result, out double result2, out double result3);
+
                     SmuMsrtValue.Add(result);
-                    //Thread.Sleep(1000); //確保輸出關閉 再打下一次電流
+                    MpdaMsrtValue.Add(result2);
+                    MpdaRpt.Add(result3);
+
+                    this._k2601Control.Close_FIMI();
+
                     this.Invoke(dupdataStatus);
+
                     cnt++;
                 }
-                //
-                this.Invoke(dNextStatus, "MPDA傳輸資料");
-                temp = this._mpdaControl.ReadRawData(cnt);
-                this.Invoke(dupdataStatus);
+
                 //
                 this.Invoke(dNextStatus, "暫存檔位9資料");
-                //this._callibrationData.CurrentCalibrate.Range9.Clear();
+
                 for (int i = 0; i < cnt; i++)
                 {
                     Item2 item2 = new Item2();
                     item2.SMUMsrtValue = SmuMsrtValue[i];
-                    item2.MPDAMsrtValue = temp[i];
-                    item2.DiffValue = SmuMsrtValue[i] - temp[i];//差值
+                    item2.MPDAMsrtValue = MpdaMsrtValue[i];
+                    item2.DiffValue = SmuMsrtValue[i] - MpdaMsrtValue[i];//差值
+                    item2.MPDARpt = MpdaRpt[i];
                     item2.Address = (byte)(0xC7 + i);
 
                     this._callibrationData.CurrentCalibrate.Range9.Add(item2);
@@ -912,9 +993,15 @@ namespace GUI
             }
             catch (Exception ex)
             {
+                this._k2601Control.Close_FIMI();
+
                 MessageBox.Show(ex.Message);
-                this.Invoke(dResBtn);
-                this.Invoke(dNextStatus,"電流校正終止");
+                if (this._frmOpen)
+                {
+                    this.Invoke(dResBtn);
+                    this.Invoke(dNextStatus, "電流校正終止");
+                }
+                
             }
             this.SerializeXML();
             
@@ -988,12 +1075,12 @@ namespace GUI
                     this.Invoke(dupdataStatus);
                     this.Invoke(dNextStatus,"暫存資料");
                     int minIndex = Array.IndexOf(difSmuMsrt.ToArray(), difSmuMsrt.Min());
-                    this._callibrationData.BiasCalibrate.TestItem[j+10] = new Item1();
+                    
                     Item1 item = new Item1();
                     item.Address = (byte)(0xDC + j + 10); //0xDC 開始
                     item.SMUMsrtValue = SmuMsrt[minIndex];
                     item.Value = BitConverter.ToString(byteCmd[minIndex]);
-                    this._callibrationData.BiasCalibrate.TestItem[j + 10] = item;
+                    this._callibrationData.BiasCalibrate.TestItem.Add(item);
                     this.Invoke(dupdataStatus);
                 }
                 //
@@ -1011,16 +1098,16 @@ namespace GUI
             }
             catch (Exception ex)
             {
+                this._k2601Control.Close_FIMI();
 
                 MessageBox.Show(ex.Message);
-                this.Invoke(dResBtn);
-                this.Invoke(dNextStatus,"Bias校正終止");
-            }
-            
+                if (this._frmOpen)
+                {
+                    this.Invoke(dResBtn);
+                    this.Invoke(dNextStatus, "Bias校正終止");
+                }                
+            }           
             this.SerializeXML();
-
-
-
         }
 
         private void WriteToRam() 
@@ -1079,7 +1166,7 @@ namespace GUI
                 //
 
                 // 寫電流校正資料
-                for (int j = 1; j < 9; j++)
+                for (int j = 1; j <= 9; j++)
                 {
                     Item2[] data;
                     this.Invoke(dNextStatus,dicRange[j] + " 校正資料寫入RAM");
@@ -1171,23 +1258,16 @@ namespace GUI
         {
             this._callibrationData = this.DeSerializeXML();
             StringBuilder sb = new StringBuilder();
-            string[] strTitle = new string[6]
+            string[] strTitle = new string[7]
             {
-                "Ram地址","檔位","SMU讀值(A)","MPA讀值(A)","差值(A)","校正值(4byte)"
+                "Ram地址","檔位","SMU讀值(A)","MPA讀值(A)","差值(A)","校正值(4byte)","MPDA Repeatability(重現性)"
                 //"A","B","C","D","E","F"
             };
             List<string> strList = new List<string>();
             string newLine;
 
             //寫校正資訊
-            #region >>>寫校正資訊<<<
-
-            using (FileStream oFileStream = new FileStream(dirPath + @"\" + "CalInf.xml", FileMode.Open))
-            {
-                XmlSerializer oXmlSerializer = new XmlSerializer(typeof(SerializableDic<string, string>));
-                CalDataCenter.CalInf = (SerializableDic<string, string>)oXmlSerializer.Deserialize(oFileStream);
-                oFileStream.Close();
-            }
+            #region >>>寫校正資訊<<<            
 
             foreach (var item in CalDataCenter.CalInf)
             {
@@ -1298,14 +1378,25 @@ namespace GUI
                         return;
                     }
                     strList.Clear();
+
                     strList.Add(ExcTran(Convert.ToString(item.Address, 16)));
+
                     strList.Add(ExcTran(dicRange[j]));
+
                     strList.Add(item.SMUMsrtValue.ToString());
+
                     strList.Add(item.MPDAMsrtValue.ToString());
+
                     strList.Add(item.DiffValue.ToString());
+
                     byte[] temp = BitConverter.GetBytes(Convert.ToInt32(CheckINT32(item.DiffValue * Math.Pow(10, j + 9))));
+
                     Array.Reverse(temp);
+
                     strList.Add(ExcTran(BitConverter.ToString(temp)));
+
+                    strList.Add(item.MPDARpt.ToString());
+
                     newLine = string.Join(",", strList);
                     sb.AppendLine(newLine);
                 }
@@ -1393,9 +1484,45 @@ namespace GUI
             return true;
         }
 
+        private void RepeatMsr(int repeatTimes, out double smuAvgValue, out double mpdaAvgValue, out double mpdaRpt) 
+        {
+            List<double> smuMsrtValue = new List<double>();
+            double[] mpdaMsrtValue;
+
+            for (int i = 0; i < repeatTimes; i++)
+            {
+                smuMsrtValue.Add(this._k2601Control.TrigMsrtI());
+                this._mpdaControl.InternalTrigger();
+            }
+
+            mpdaMsrtValue = this._mpdaControl.ReadRawData(repeatTimes);
+
+            mpdaRpt = mpdaMsrtValue.Max() - mpdaMsrtValue.Min();
+
+            mpdaAvgValue = mpdaMsrtValue.Average();
+
+            smuAvgValue = smuMsrtValue.Average();
+
+            this._mpdaControl.ClearBuffer();
+        }
+
         #endregion
 
         #region >>>Event<<<
+
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (newThread != null)
+            {
+                this.newThread.Abort();
+            }
+            this._frmOpen = false;
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            this._frmOpen = true;
+        }
 
         private void tsmZero_Click(object sender, EventArgs e)
         {
@@ -1495,8 +1622,10 @@ namespace GUI
             this._subFormAgent.PIVrun(this._mpdaControl, this._k2601Control);
         }
 
+
+
         #endregion
 
-
+        
     }
 }

@@ -17,8 +17,8 @@ namespace Device.K2601
 
         private string _script;
 
-        #endregion        
-        
+        #endregion
+
         #region >>>Property<<<
 
         public CommunicationBase CommunicationBase
@@ -30,7 +30,7 @@ namespace Device.K2601
 
         #region >>>Constructor<<<
 
-        public K2601Control(TcpSetting tcpSet) 
+        public K2601Control(TcpSetting tcpSet)
         {
             this._communicationBase = new CommunicationBase(tcpSet);
             if (!this._communicationBase.Connect())
@@ -43,7 +43,7 @@ namespace Device.K2601
 
         #region >>>Public method<<<
 
-        public bool Config() 
+        public bool Config()
         {
             string cmd = string.Empty;
 
@@ -59,23 +59,23 @@ namespace Device.K2601
             while (!str.Contains('5'))
             {
                 str = this._communicationBase.Receive(0);//把一開始資料流的東西 收走
-                if (str == CommunicationBase.STR_NORE)
+                if (str == CommunicationBase.STR_NONE)
                 {
                     return false;
                 }
             }
-            
+
 
             //load function
             this.LoadFunction_FiMi();
             return true;
         }
 
-        public void Print() 
+        public void Print()
         {
             this._script = string.Empty;
             //this._script += "loadscript num0" + "\n";
-            this._script += "reset()" + "\n";            
+            this._script += "reset()" + "\n";
             this._script += "x=10" + "\n";
             this._script += "y=100" + "\n";
             this._script += "print(x)" + "\n";
@@ -141,7 +141,7 @@ namespace Device.K2601
             this._communicationBase.SendCommand(this._script);
         }
 
-        public void FunctionTest1() 
+        public void FunctionTest1()
         {
             this._script = string.Empty;
             this._script += "loadscript num1\n";
@@ -157,12 +157,12 @@ namespace Device.K2601
             script += "function" + " ";
             script += "CtrlOupput(b)" + " ";
             //script += "reset()" + " ";
-            script += "smua.source.output = b" + " ";            
+            script += "smua.source.output = b" + " ";
             script += "end" + "\n";
             this._communicationBase.SendCommand(script);
-        }      
-        
-        public void LoadFunction_FiMi() 
+        }
+
+        public void LoadFunction_FiMi()
         {
             string script = string.Empty;
             //script += "reset()" + " ";
@@ -171,7 +171,7 @@ namespace Device.K2601
             //script += "print(forceI)" + " ";
             //script += "print(protectionV)" + " ";
 
-            script += "smua.nvbuffer1.clear()" + " ";           
+            script += "smua.nvbuffer1.clear()" + " ";
             script += "smua.measure.nplc = 15" + " ";
             script += "smua.measure.rangei = forceI" + " ";
             script += "smua.source.func = 0" + " ";
@@ -190,6 +190,78 @@ namespace Device.K2601
             script += "printbuffer(1, smua.nvbuffer1.n, smua.nvbuffer1)" + " ";
             script += "end" + "\n";
             this._communicationBase.SendCommand(script);
+        }
+
+        public void Open_FiMi(double forceI) //開電
+        {
+            string script = string.Empty;
+            //script += "loadscript OpenFi" + "\n";
+            
+            script += "smua.measure.nplc = 10" + "\n";
+            
+            script += "smua.source.func = 0" + "\n";
+            script += String.Format("smua.source.rangei = {0}\n", forceI);           
+            //script += "smua.source.autorangev = 1" + "\n";
+            script += "smua.source.limitv = 1.2" + "\n";
+
+            script += String.Format("smua.measure.rangei = {0}\n", forceI);
+
+            script += String.Format("smua.source.leveli = {0}\n", forceI);
+            script += "smua.source.output = 1" + "\n";
+            
+
+
+            //script += "endscript" + "\n";
+            this._communicationBase.SendCommand(script);
+        }
+
+        public void Close_FIMI() //Close電
+        {
+            string script = string.Empty;
+            //script += "loadscript OpenFi" + "\n";
+
+            script += "smua.source.output = 0" + "\n";
+            script += "smua.source.leveli = 0" + "\n";
+
+            //script += "endscript" + "\n";
+            this._communicationBase.SendCommand(script);
+        }
+
+        public void Open_FVMI(double forceV, double msrI) 
+        {
+            string script = string.Empty;
+            //script += "loadscript OpenFi" + "\n";
+
+            script += "smua.measure.nplc = 10" + "\n";
+
+            script += "smua.source.func = 1" + "\n";
+            script += String.Format("smua.source.rangev = {0}\n", forceV);
+            //script += "smua.source.autorangev = 1" + "\n";
+            //script += "smua.source.limitv = 1.2" + "\n";
+            script += String.Format("smua.source.limiti = {0}\n", msrI);
+
+            script += String.Format("smua.measure.rangei = {0}\n", msrI);
+
+            script += String.Format("smua.source.levelv = {0}\n", forceV);
+            script += "smua.source.output = 1" + "\n";
+
+
+
+            //script += "endscript" + "\n";
+            this._communicationBase.SendCommand(script);
+        }
+
+        public double TrigMsrtI() 
+        {
+            string script = string.Empty;
+            script += "print(smua.measure.i())" + "\n";
+            this._communicationBase.SendCommand(script);
+
+            double dOut;
+            Double.TryParse(this._communicationBase.Receive(0),out dOut);
+
+            return dOut;
+
         }
 
         public void SetMsrtV() 

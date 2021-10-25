@@ -84,38 +84,74 @@ namespace GUI
 
         private void frmTcpSet_Load(object sender, EventArgs e)
         {
-            textBox1.Text = GUI.Properties.Settings.Default.txt1;
-            textBox2.Text = GUI.Properties.Settings.Default.txt2;
-            textBox3.Text = GUI.Properties.Settings.Default.txt3;
-            textBox4.Text = GUI.Properties.Settings.Default.txt4;
-            txt5.Text = GUI.Properties.Settings.Default.txt5;
-            txt6.Text = GUI.Properties.Settings.Default.txt6;
-            txt7.Text = GUI.Properties.Settings.Default.txt7;
-            txt8.Text = GUI.Properties.Settings.Default.txt8;
-            txt9.Text = GUI.Properties.Settings.Default.txt9;
-            txt10.Text = GUI.Properties.Settings.Default.txt10;
-            txt11.Text = GUI.Properties.Settings.Default.txt11;
-            txt12.Text = GUI.Properties.Settings.Default.txt12;
-            txt13.Text = GUI.Properties.Settings.Default.txt13;
+            string outStr;
+            string[] strArr;
+
+            //CalDataCenter.CalInf.TryGetValue("IP", out outStr);
+            outStr = CalDataCenter.CalInf.GetValue("IP");
+
+            strArr = outStr.Split('.');
+
+            if (strArr.Length!=4)
+            {
+                strArr = new string[4];
+            }
+
+            textBox1.Text = strArr[0];
+            textBox2.Text = strArr[1];
+            textBox3.Text = strArr[2];
+            textBox4.Text = strArr[3];
+
+            outStr = CalDataCenter.CalInf.GetValue("SubMask");
+
+            strArr = outStr.Split('.');
+
+            if (strArr.Length != 4)
+            {
+                strArr = new string[4];
+            }
+
+            txt5.Text = strArr[0];
+            txt6.Text = strArr[1];
+            txt7.Text = strArr[2];
+            txt8.Text = strArr[3];
+
+            outStr = CalDataCenter.CalInf.GetValue("DefaultGateWay");
+
+            strArr = outStr.Split('.');
+
+            if (strArr.Length != 4)
+            {
+                strArr = new string[4];
+            }
+
+            txt9.Text = strArr[0];
+            txt10.Text = strArr[1];
+            txt11.Text = strArr[2];
+            txt12.Text = strArr[3];
+
+            outStr = CalDataCenter.CalInf.GetValue("Port");
+
+            txt13.Text = outStr;
             
         }
 
         private void frmTcpSet_FormClosed(object sender, FormClosedEventArgs e)
         {
-            GUI.Properties.Settings.Default.txt1 = textBox1.Text;
-            GUI.Properties.Settings.Default.txt2 = textBox2.Text;
-            GUI.Properties.Settings.Default.txt3 = textBox3.Text;
-            GUI.Properties.Settings.Default.txt4 = textBox4.Text;
-            GUI.Properties.Settings.Default.txt5 = txt5.Text;
-            GUI.Properties.Settings.Default.txt6 = txt6.Text;
-            GUI.Properties.Settings.Default.txt7 = txt7.Text;
-            GUI.Properties.Settings.Default.txt8 = txt8.Text;
-            GUI.Properties.Settings.Default.txt9 = txt9.Text;
-            GUI.Properties.Settings.Default.txt10 = txt10.Text;
-            GUI.Properties.Settings.Default.txt11 = txt11.Text;
-            GUI.Properties.Settings.Default.txt12 = txt12.Text;
-            GUI.Properties.Settings.Default.txt13 = txt13.Text;
-            GUI.Properties.Settings.Default.Save();
+            //GUI.Properties.Settings.Default.txt1 = textBox1.Text;
+            //GUI.Properties.Settings.Default.txt2 = textBox2.Text;
+            //GUI.Properties.Settings.Default.txt3 = textBox3.Text;
+            //GUI.Properties.Settings.Default.txt4 = textBox4.Text;
+            //GUI.Properties.Settings.Default.txt5 = txt5.Text;
+            //GUI.Properties.Settings.Default.txt6 = txt6.Text;
+            //GUI.Properties.Settings.Default.txt7 = txt7.Text;
+            //GUI.Properties.Settings.Default.txt8 = txt8.Text;
+            //GUI.Properties.Settings.Default.txt9 = txt9.Text;
+            //GUI.Properties.Settings.Default.txt10 = txt10.Text;
+            //GUI.Properties.Settings.Default.txt11 = txt11.Text;
+            //GUI.Properties.Settings.Default.txt12 = txt12.Text;
+            //GUI.Properties.Settings.Default.txt13 = txt13.Text;
+            //GUI.Properties.Settings.Default.Save();
         }
     }
 }

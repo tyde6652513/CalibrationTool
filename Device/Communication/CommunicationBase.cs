@@ -16,7 +16,7 @@ namespace Device.Communication
     /// </summary>
     public class CommunicationBase
     {
-        public const string STR_NORE = "No Response";
+        public const string STR_NONE = "No Response";
 
         private TcpSetting _tcpSetting;
         private TcpClient _client;
@@ -254,7 +254,7 @@ namespace Device.Communication
             }
             this._sw.Stop();
             this._sw.Reset();
-            return STR_NORE;
+            return STR_NONE;
         }
 
         #endregion
