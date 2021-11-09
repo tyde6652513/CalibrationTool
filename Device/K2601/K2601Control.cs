@@ -52,6 +52,7 @@ namespace Device.K2601
             cmd += "smua.sense = smua.SENSE_LOCAL" + "\n";
             cmd += "smua.source.autorangei = 0" + "\n";
             cmd += "smua.measure.autorangei = 0" + "\n";
+            cmd += "smua.measure.delay = smua.DELAY_OFF" + "\n";
             cmd += "print(5)" + "\n";
             this._communicationBase.SendCommand(cmd);
             Thread.Sleep(100);// 需要 不然收不完 會在下一次收的時候出現 
@@ -192,7 +193,7 @@ namespace Device.K2601
             this._communicationBase.SendCommand(script);
         }
 
-        public void Open_FiMi(double forceI) //開電
+        public void Open_FiMi(double forceI, double rangeI) //開電
         {
             string script = string.Empty;
             //script += "loadscript OpenFi" + "\n";
@@ -200,11 +201,11 @@ namespace Device.K2601
             script += "smua.measure.nplc = 10" + "\n";
             
             script += "smua.source.func = 0" + "\n";
-            script += String.Format("smua.source.rangei = {0}\n", forceI);           
+            script += String.Format("smua.source.rangei = {0}\n", rangeI);           
             //script += "smua.source.autorangev = 1" + "\n";
             script += "smua.source.limitv = 1.2" + "\n";
 
-            script += String.Format("smua.measure.rangei = {0}\n", forceI);
+            script += String.Format("smua.measure.rangei = {0}\n", rangeI);
 
             script += String.Format("smua.source.leveli = {0}\n", forceI);
             script += "smua.source.output = 1" + "\n";

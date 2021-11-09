@@ -479,7 +479,8 @@ namespace GUI
 
 
             int repeatMsrtTimes = 10;
-            string SmuReturnData;
+            double smuRangeI;
+           
 
             List<double> SmuMsrtValue = new List<double>(); //存取SMU量測I值this.Invoke(dupdataStatus);
             List<double> MpdaMsrtValue = new List<double>(); //存取MPDA量測I值
@@ -514,12 +515,13 @@ namespace GUI
                 this.Invoke(dupdataStatus);
 
                 int cnt = 0;
+                smuRangeI = 100e-3;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 10) + "(mA), 開始量測");
 
                     //this._k2601Control.CommunicationBase.SendCommand("SiMi(" + (i / 100) + ", 2)");
-                    this._k2601Control.Open_FiMi((i / 100));
+                    this._k2601Control.Open_FiMi((i / 100), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -569,11 +571,12 @@ namespace GUI
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
+                smuRangeI = 10e-3;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + i + "(mA), 開始量測");
                     //this._k2601Control.CommunicationBase.SendCommand("SiMi(" + i + "e-3, 2)");
-                    this._k2601Control.Open_FiMi((i / 1000));
+                    this._k2601Control.Open_FiMi((i / 1000), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -624,11 +627,12 @@ namespace GUI
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
+                smuRangeI = 1e-3;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 100) + "(uA), 開始量測");
 
-                    this._k2601Control.Open_FiMi((i / 10000));
+                    this._k2601Control.Open_FiMi((i / 10000), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -679,10 +683,11 @@ namespace GUI
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
+                smuRangeI = 100e-6;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 10) + "(uA), 開始量測");
-                    this._k2601Control.Open_FiMi((i / 100000));
+                    this._k2601Control.Open_FiMi((i / 100000), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -733,10 +738,11 @@ namespace GUI
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
+                smuRangeI = 10e-6;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + i + "(uA), 開始量測");
-                    this._k2601Control.Open_FiMi((i / 1000000));
+                    this._k2601Control.Open_FiMi((i / 1000000), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -787,10 +793,11 @@ namespace GUI
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
+                smuRangeI = 1e-6;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 100) + "(nA), 開始量測");
-                    this._k2601Control.Open_FiMi((i / 10000000));
+                    this._k2601Control.Open_FiMi((i / 10000000), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -841,10 +848,11 @@ namespace GUI
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
+                smuRangeI = 100e-9;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 10) + "(nA), 開始量測");
-                    this._k2601Control.Open_FiMi((i / 100000000));
+                    this._k2601Control.Open_FiMi((i / 100000000), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -896,11 +904,11 @@ namespace GUI
 
                 cnt = 0;
                 repeatMsrtTimes = 50;//for 8、9 檔位
-
+                smuRangeI = 10e-9;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + i + "(nA), 開始量測");
-                    this._k2601Control.Open_FiMi((i / 1000000000));
+                    this._k2601Control.Open_FiMi((i / 1000000000), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -951,10 +959,11 @@ namespace GUI
                 this.Invoke(dupdataStatus);
 
                 cnt = 0;
+                smuRangeI = 1e-9;
                 for (double i = -10; i <= 10; i++)
                 {
                     this.Invoke(dNextStatus, "輸出電流" + (i * 100) + "(pA), 開始量測");
-                    this._k2601Control.Open_FiMi((i / 10000000000));
+                    this._k2601Control.Open_FiMi((i / 10000000000), smuRangeI);
 
                     Thread.Sleep(1000); //開電後 延遲 用以穩定
 
@@ -1140,15 +1149,19 @@ namespace GUI
                 this.Invoke(dNextStatus, "輸入校正日期");
                 CalDataCenter.CalInf["Time"] = DateTime.Now.ToString("yyyy-MM-dd");
                 string str = CalDataCenter.CalInf["Time"].Replace("-", "");
-                byte2[0] = Convert.ToByte(str[0].ToString());//年
-                byte2[1] = Convert.ToByte(str[1].ToString());
-                byte2[2] = Convert.ToByte(str[2].ToString());
-                byte2[3] = Convert.ToByte(str[3].ToString());
+
+                byte2[0] = (byte)str[0];//年
+                byte2[1] = (byte)str[1];
+                byte2[2] = (byte)str[2];
+                byte2[3] = (byte)str[3];
+
                 this._mpdaControl.SetToRam(0x03, byte2);
-                byte2[0] = Convert.ToByte(str[4].ToString());//月日
-                byte2[1] = Convert.ToByte(str[5].ToString());
-                byte2[2] = Convert.ToByte(str[6].ToString());
-                byte2[3] = Convert.ToByte(str[7].ToString());
+
+                byte2[0] = (byte)str[4];//月日
+                byte2[1] = (byte)str[5];
+                byte2[2] = (byte)str[6];
+                byte2[3] = (byte)str[7];
+
                 this._mpdaControl.SetToRam(0x04, byte2);
                 this.Invoke(dupdataStatus);
                 //輸入TCP設定
