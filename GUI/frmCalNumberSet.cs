@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using TestSeting;
 
 namespace GUI
 {
@@ -43,13 +44,16 @@ namespace GUI
             {
                 MessageBox.Show("請輸入8位英數字");
                 return;
-            }           
+            }
+
+            CalDataCenter.CalInf["CalNum"] = textBox1.Text;
+
             this.Close();
         }
 
         private void frmCalNumberSet_Load(object sender, EventArgs e)
         {
-            textBox1.Text = GUI.Properties.Settings.Default.CalNumber;
+            textBox1.Text = CalDataCenter.CalInf["CalNum"];
         }
 
         private void frmCalNumberSet_FormClosed(object sender, FormClosedEventArgs e)

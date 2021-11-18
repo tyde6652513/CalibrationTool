@@ -42,6 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaliDataStatus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CaliDataStatus.Designer.cs">
+      <DependentUpon>CaliDataStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCalNumberSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,9 +102,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Report.cs" />
     <Compile Include="SubFormAgent.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CaliDataStatus.resx">
+      <DependentUpon>CaliDataStatus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCalNumberSet.resx">
       <DependentUpon>frmCalNumberSet.cs</DependentUpon>
     </EmbeddedResource>
