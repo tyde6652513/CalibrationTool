@@ -46,6 +46,8 @@ namespace GUI
 
         public void OutputExcel(CalibrationData data, string filePath)
         {
+            this._sb.Clear();
+
             //寫校正資訊
             this.WriteCalInf();           
 
