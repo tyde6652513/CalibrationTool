@@ -231,7 +231,7 @@ namespace GUI
             this.tsmBias.Enabled = false;
             this.tsmQCTest.Enabled = false;
             this.tsmWrite.Enabled = false;
-            this.tsmOutputExcel.Enabled = false;
+            this.tsmOutputCSV.Enabled = false;
             this.tsmClear.Enabled = false;
             this.tsmPause.Enabled = true;
 
@@ -257,7 +257,7 @@ namespace GUI
             this.tsmBias.Enabled = true;
             this.tsmQCTest.Enabled = true;
             this.tsmWrite.Enabled = true;
-            this.tsmOutputExcel.Enabled = true;
+            this.tsmOutputCSV.Enabled = true;
             this.tsmClear.Enabled = true;
             this.tsmPause.Enabled = false;                       
             
@@ -1102,7 +1102,14 @@ namespace GUI
 
             this._callibrationData = this.DeSerializeXML(); //一律再讀一次 有可能之前校正暫停過
 
-            _report.OutputExcel(this._callibrationData, filePath);
+            if (sender.ToString().Contains("校正"))
+            {
+                _report.OutputCaliData(this._callibrationData, filePath);
+            }
+            else if (sender.ToString().Contains("QC"))
+            {
+                _report.OutputQCData(this._callibrationData, filePath);
+            }
         }
 
         private void tsmSMUConnect_Click(object sender, EventArgs e)
@@ -1175,5 +1182,6 @@ namespace GUI
         }
 
         #endregion
+
     }
 }

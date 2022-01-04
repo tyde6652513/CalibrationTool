@@ -44,7 +44,7 @@ namespace GUI
             };
         }
 
-        public void OutputExcel(CalibrationData data, string filePath)
+        public void OutputCaliData(CalibrationData data, string filePath)
         {
             this._sb.Clear();
 
@@ -59,6 +59,24 @@ namespace GUI
           
             //寫Bias資料
             this.WriteBias(data);
+
+            //寫檔案
+            try
+            {
+                File.WriteAllText(filePath, this._sb.ToString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void OutputQCData(CalibrationData data, string filePath)
+        {
+            this._sb.Clear();
+
+            //寫校正資訊
+            this.WriteCalInf();
 
             //寫QC資料
             this.WriteQC(data);
@@ -277,38 +295,7 @@ namespace GUI
                     newLine = string.Join(",", strList);
                     this._sb.AppendLine(newLine);
                 }
-                //foreach (var item in data.QCTest[j])
-                //{
-                //    if (item == null)
-                //    {
-                //        MessageBox.Show("QC資料缺失，請檢察xml檔或重新校正並寫入");
-                //        return;
-                //    }
-                //    strList.Clear();
-
-                //    strList.Add(ExcTran(Convert.ToString(item.Address, 16)));
-
-                //    strList.Add(ExcTran(CurrentCalSet.Range[j]));
-
-                //    strList.Add(item.SMUMsrtValue.ToString());
-
-                //    strList.Add(item.MPDAMsrtValue.ToString());
-
-                //    strList.Add(item.DiffValue.ToString());
-
-                //    byte[] temp = item.GetByteArr(j);
-
-                //    Array.Reverse(temp);
-
-                //    strList.Add(ExcTran(BitConverter.ToString(temp)));
-
-                //    strList.Add(item.MPDARpt.ToString());
-
-                //    newLine = string.Join(",", strList);
-                //    this._sb.AppendLine(newLine);
-                //}
             }
-
             this._sb.AppendLine(string.Empty);
         }
 

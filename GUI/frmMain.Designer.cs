@@ -49,7 +49,7 @@
             this.tsmiPIV = new System.Windows.Forms.ToolStripMenuItem();
             this.資料存取ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmWrite = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmOutputExcel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmOutputCSV = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmClear = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmClearZero = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmClearOffset = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,6 +60,8 @@
             this.tsmQCTest = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.caliDataStatus1 = new GUI.CaliDataStatus();
+            this.tsmOutputCaliData = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmOutputQCData = new System.Windows.Forms.ToolStripMenuItem();
             this.mspTool.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -238,7 +240,7 @@
             // 
             this.資料存取ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmWrite,
-            this.tsmOutputExcel,
+            this.tsmOutputCSV,
             this.tsmClear});
             this.資料存取ToolStripMenuItem.Name = "資料存取ToolStripMenuItem";
             this.資料存取ToolStripMenuItem.Size = new System.Drawing.Size(98, 28);
@@ -247,16 +249,18 @@
             // tsmWrite
             // 
             this.tsmWrite.Name = "tsmWrite";
-            this.tsmWrite.Size = new System.Drawing.Size(200, 28);
+            this.tsmWrite.Size = new System.Drawing.Size(194, 28);
             this.tsmWrite.Text = "寫入校正資料";
             this.tsmWrite.Click += new System.EventHandler(this.tsmWrite_Click);
             // 
-            // tsmOutputExcel
+            // tsmOutputCSV
             // 
-            this.tsmOutputExcel.Name = "tsmOutputExcel";
-            this.tsmOutputExcel.Size = new System.Drawing.Size(200, 28);
-            this.tsmOutputExcel.Text = "輸出Excel檔案";
-            this.tsmOutputExcel.Click += new System.EventHandler(this.tsmOutputExcel_Click);
+            this.tsmOutputCSV.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmOutputCaliData,
+            this.tsmOutputQCData});
+            this.tsmOutputCSV.Name = "tsmOutputCSV";
+            this.tsmOutputCSV.Size = new System.Drawing.Size(194, 28);
+            this.tsmOutputCSV.Text = "輸出CSV檔案";
             // 
             // tsmClear
             // 
@@ -268,7 +272,7 @@
             this.tsmClearQC,
             this.tsmClearAll});
             this.tsmClear.Name = "tsmClear";
-            this.tsmClear.Size = new System.Drawing.Size(200, 28);
+            this.tsmClear.Size = new System.Drawing.Size(194, 28);
             this.tsmClear.Text = "清除本機資料";
             // 
             // tsmClearZero
@@ -327,6 +331,20 @@
             this.caliDataStatus1.Size = new System.Drawing.Size(107, 131);
             this.caliDataStatus1.TabIndex = 14;
             // 
+            // tsmOutputCaliData
+            // 
+            this.tsmOutputCaliData.Name = "tsmOutputCaliData";
+            this.tsmOutputCaliData.Size = new System.Drawing.Size(194, 28);
+            this.tsmOutputCaliData.Text = "輸出校正紀錄";
+            this.tsmOutputCaliData.Click += new System.EventHandler(this.tsmOutputExcel_Click);
+            // 
+            // tsmOutputQCData
+            // 
+            this.tsmOutputQCData.Name = "tsmOutputQCData";
+            this.tsmOutputQCData.Size = new System.Drawing.Size(194, 28);
+            this.tsmOutputQCData.Text = "輸出QC測試";
+            this.tsmOutputQCData.Click += new System.EventHandler(this.tsmOutputExcel_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -375,7 +393,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmBias;
         private System.Windows.Forms.ToolStripMenuItem 資料存取ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmWrite;
-        private System.Windows.Forms.ToolStripMenuItem tsmOutputExcel;
+        private System.Windows.Forms.ToolStripMenuItem tsmOutputCSV;
         private System.Windows.Forms.ToolStripMenuItem tsmPause;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem tsmDisconnect;
@@ -389,5 +407,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmClearQC;
         private System.Windows.Forms.ToolStripMenuItem tsmClearAll;
         private System.Windows.Forms.ToolStripMenuItem tsmQCTest;
+        private System.Windows.Forms.ToolStripMenuItem tsmOutputCaliData;
+        private System.Windows.Forms.ToolStripMenuItem tsmOutputQCData;
     }
 }
