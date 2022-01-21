@@ -742,7 +742,7 @@ namespace GUI
                             }
                         }                                             
                         byte[] temp = new byte[4] { 0x00, 0x00,
-                                      this._mpdaControl.ByteCmd[1], this._mpdaControl.ByteCmd[2] };
+                                      this._mpdaControl.ByteCmd[2], this._mpdaControl.ByteCmd[3] };
                         byteCmd.Add(temp);
                         if (increaseFlag > 3) //表示已經過最接近值 可不用在往下搜尋
                         {
@@ -1007,6 +1007,8 @@ namespace GUI
                 this.newThread.Abort();
             }
             this._frmOpen = false;
+
+            this.CloseDevice();
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -1096,7 +1098,7 @@ namespace GUI
             if (saveFileDialog1.ShowDialog() != DialogResult.OK)
             {
                 return;
-            }
+            }        
 
             string filePath = saveFileDialog1.FileName;
 
