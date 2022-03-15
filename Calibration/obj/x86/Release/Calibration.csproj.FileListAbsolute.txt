@@ -1,0 +1,176 @@
+D:\Document\CSharp\Calibration\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration\Calibration\obj\x86\Release\Calibration.csprojAssemblyReference.cache
+D:\Document\CSharp\Calibration\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.1_0830\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.Cache
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.2_1005\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.3_1012\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.4_1021\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.5_1025\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.6_1109\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.7\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.7\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.7\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.7\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.7\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.7\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.7\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.7\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.8\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.8\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.8\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.8\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.8\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.8\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.8\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.8\Calibration\obj\x86\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\Calibration.pdb
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\GUI.dll
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\Device.dll
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\GUI.pdb
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\GUI.dll.config
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.9\Calibration\bin\Release\Device.pdb
+D:\Document\CSharp\Calibration_V1.9\Calibration\obj\x86\Release\Calibration.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.9\Calibration\obj\x86\Release\Calibration.Properties.Resources.resources
+D:\Document\CSharp\Calibration_V1.9\Calibration\obj\x86\Release\Calibration.csproj.GenerateResource.cache
+D:\Document\CSharp\Calibration_V1.9\Calibration\obj\x86\Release\Calibration.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.9\Calibration\obj\x86\Release\Calibration.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.9\Calibration\obj\x86\Release\Calibration.exe
+D:\Document\CSharp\Calibration_V1.9\Calibration\obj\x86\Release\Calibration.pdb

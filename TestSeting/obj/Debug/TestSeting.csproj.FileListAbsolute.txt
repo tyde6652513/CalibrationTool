@@ -1,0 +1,76 @@
+D:\Document\CSharp\PIVTester\TestSeting\bin\Debug\TestSeting.dll
+D:\Document\CSharp\PIVTester\TestSeting\bin\Debug\TestSeting.pdb
+D:\Document\CSharp\PIVTester\TestSeting\obj\Debug\TestSeting.dll
+D:\Document\CSharp\PIVTester\TestSeting\obj\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration\TestSeting\obj\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration\TestSeting\obj\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration\TestSeting\bin\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration\TestSeting\bin\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration\TestSeting\obj\Debug\TestSeting.csproj.CoreCompileInputs.cache
+D:\CSHARP\Calibration\TestSeting\bin\Debug\TestSeting.dll
+D:\CSHARP\Calibration\TestSeting\bin\Debug\TestSeting.pdb
+D:\CSHARP\Calibration\TestSeting\obj\Debug\TestSeting.csprojAssemblyReference.cache
+D:\CSHARP\Calibration\TestSeting\obj\Debug\TestSeting.csproj.CoreCompileInputs.cache
+D:\CSHARP\Calibration\TestSeting\obj\Debug\TestSeting.dll
+D:\CSHARP\Calibration\TestSeting\obj\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration\TestSeting\obj\Debug\TestSeting.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration\TestSeting\bin\Debug\Microsoft.Expression.Interactions.dll
+D:\Document\CSharp\Calibration\TestSeting\bin\Debug\System.Windows.Interactivity.dll
+D:\Document\CSharp\Calibration\TestSeting\bin\Debug\Microsoft.Expression.Interactions.xml
+D:\Document\CSharp\Calibration\TestSeting\bin\Debug\System.Windows.Interactivity.xml
+D:\Document\CSharp\Calibration\TestSeting\obj\Debug\TestSeting.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\bin\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\bin\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\bin\Debug\Microsoft.Expression.Interactions.dll
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\bin\Debug\System.Windows.Interactivity.dll
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\bin\Debug\Microsoft.Expression.Interactions.xml
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\bin\Debug\System.Windows.Interactivity.xml
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\obj\Debug\TestSeting.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\obj\Debug\TestSeting.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\obj\Debug\TestSeting.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\obj\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.1_0830\TestSeting\obj\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\bin\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\bin\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\bin\Debug\Microsoft.Expression.Interactions.dll
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\bin\Debug\System.Windows.Interactivity.dll
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\bin\Debug\Microsoft.Expression.Interactions.xml
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\bin\Debug\System.Windows.Interactivity.xml
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\obj\Debug\TestSeting.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\obj\Debug\TestSeting.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\obj\Debug\TestSeting.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\obj\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.2_1005\TestSeting\obj\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\bin\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\bin\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\bin\Debug\Microsoft.Expression.Interactions.dll
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\bin\Debug\System.Windows.Interactivity.dll
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\bin\Debug\Microsoft.Expression.Interactions.xml
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\bin\Debug\System.Windows.Interactivity.xml
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\obj\Debug\TestSeting.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\obj\Debug\TestSeting.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\obj\Debug\TestSeting.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\obj\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.4_1021 - 複製\TestSeting\obj\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\bin\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\bin\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\bin\Debug\Microsoft.Expression.Interactions.dll
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\bin\Debug\System.Windows.Interactivity.dll
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\bin\Debug\Microsoft.Expression.Interactions.xml
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\bin\Debug\System.Windows.Interactivity.xml
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\obj\Debug\TestSeting.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\obj\Debug\TestSeting.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\obj\Debug\TestSeting.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\obj\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.5_1025\TestSeting\obj\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\bin\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\bin\Debug\TestSeting.pdb
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\bin\Debug\Microsoft.Expression.Interactions.dll
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\bin\Debug\System.Windows.Interactivity.dll
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\bin\Debug\Microsoft.Expression.Interactions.xml
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\bin\Debug\System.Windows.Interactivity.xml
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\obj\Debug\TestSeting.csproj.AssemblyReference.cache
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\obj\Debug\TestSeting.csproj.CoreCompileInputs.cache
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\obj\Debug\TestSeting.csproj.CopyComplete
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\obj\Debug\TestSeting.dll
+D:\Document\CSharp\Calibration_V1.6_1109\TestSeting\obj\Debug\TestSeting.pdb
